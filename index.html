@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rheigne Dela Cruz — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Three.js for 3D Dark Blue Interactive Background -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<style>
+  :root{
+    --bg: #0A1128;
+    --panel: rgba(16, 24, 58, 0.75);
+    --panel-solid: #10183A;
+    --accent: #4C8DFF;
+    --accent-glow: #8FD3FF;
+    --text: #F3F6FF;
+    --muted: #8C9BC4;
+    --line: rgba(255,255,255,0.12);
+    color-scheme: dark;
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%; margin:0; scroll-behavior:smooth;}
+  body{ background:var(--bg); color:var(--text); font-family:'Inter', sans-serif; overflow-x:hidden; }
+  .mono{ font-family:'JetBrains Mono', monospace; letter-spacing:0.02em; }
+
+  /* ---------- 3D CANVAS BACKGROUND ---------- */
+  #webgl-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px 7vw; padding-top:calc(18px + env(safe-area-inset-top,0px));
+    background:rgba(10,17,40,0.85); backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line); font-size:0.85rem;
+  }
+  nav .logo{ font-family:'Instrument Serif', serif; font-size:1.5rem; text-decoration:none; color:var(--text); }
+  nav .logo span{ color:var(--accent-glow); }
+  nav .links{ display:flex; gap:20px; align-items:center; }
+  nav a{ color:var(--muted); text-decoration:none; transition:color .15s ease; font-weight:500; }
+  nav a:hover, nav a.active{ color:var(--text); }
+  
+  nav .cta{
+    border:1px solid var(--line); border-radius:999px; padding:8px 18px;
+    color:var(--text) !important; transition:border-color .2s ease, background .2s ease;
+  }
+  nav .cta:hover{ border-color:var(--accent-glow); background:rgba(76,141,255,0.15); }
+
+  .scroller{ height:100vh; overflow-y:auto; scroll-snap-type:y mandatory; position:relative; z-index:10; }
+  section{
+    min-height:100vh; scroll-snap-align:start; position:relative;
+    display:flex; flex-direction:column; padding:0 7vw;
+    padding-top:96px; z-index:10;
+  }
+
+  /* ---------- HERO ANIMATIONS ---------- */
+  @keyframes heroTitleReveal {
+    0% { opacity: 0; transform: translateY(35px) scale(0.96); filter: blur(10px); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  }
+  @keyframes heroFadeUp {
+    0% { opacity: 0; transform: translateY(25px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-title { animation: heroTitleReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  .animate-eyebrow { opacity: 0; animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; }
+  .animate-desc { opacity: 0; animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; }
+  .animate-sub { opacity: 0; animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards; }
+  .animate-actions { opacity: 0; animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards; }
+
+  /* ---------- HERO ---------- */
+  #hero{ justify-content:center; overflow:hidden; }
+  .beam{
+    position:absolute; top:-20%; right:-10%; width:70vw; height:160%;
+    background:linear-gradient(115deg, transparent 40%, rgba(76,141,255,0.18) 48%, rgba(143,211,255,0.12) 52%, transparent 60%);
+    pointer-events:none; animation: drift 16s ease-in-out infinite alternate;
+  }
+  @keyframes drift{ from{ transform:translateX(0) rotate(0deg);} to{ transform:translateX(-30px) rotate(2deg);} }
+
+  .hero-wrap{ flex:1; display:flex; align-items:center; gap:60px; }
+  .hero-body{ max-width:720px; }
+  .eyebrow{ color:var(--muted); font-size:0.85rem; margin-bottom:18px; }
+  
+  h1{
+    font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(3.5rem, 8.5vw, 6.5rem);
+    line-height:0.98; margin:0 0 24px; color:var(--text); letter-spacing:-0.02em;
+    text-shadow: 0 0 35px rgba(76, 141, 255, 0.25);
+  }
+  h1 em{ font-style:italic; color:var(--accent-glow); }
+  .hero-desc{ color:var(--text); font-size:1.15rem; max-width:540px; line-height:1.6; margin-bottom:14px; font-weight:500; }
+  .hero-sub{ color:var(--muted); font-size:1.05rem; max-width:520px; line-height:1.6; margin-bottom:36px; }
+  .hero-actions{ display:flex; gap:16px; align-items:center; }
+  
+  .btn{
+    padding:14px 30px; border-radius:999px; font-size:0.95rem; font-weight:500; cursor:pointer;
+    border:1px solid var(--line); color:var(--text); background:rgba(16, 24, 58, 0.6); text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px; transition:all .2s ease;
+    backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  }
+  .btn-solid{ background:var(--accent); border-color:var(--accent); color:#06112B; font-weight:700; box-shadow: 0 0 25px rgba(76, 141, 255, 0.4); }
+  .btn:hover{ border-color:var(--accent-glow); transform:translateY(-2px); }
+  .btn-solid:hover{ background:var(--accent-glow); border-color:var(--accent-glow); box-shadow: 0 0 35px rgba(143, 211, 255, 0.6); }
+
+  /* Hero Visual & Profile Picture */
+  .hero-visual{ flex-shrink:0; width:300px; height:380px; position:relative; display:none; }
+
+  .hero-visual .profile-img-wrap{
+    width:100%; height:100%; border-radius:20px; overflow:hidden;
+    border:2px solid var(--accent); background:var(--panel);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(76,141,255,0.3);
+    position:relative; transition:transform 0.3s ease, border-color 0.3s ease;
+  }
+  .hero-visual .profile-img-wrap:hover{
+    transform:scale(1.02);
+    border-color:var(--accent-glow);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(143,211,255,0.5);
+  }
+  .hero-visual img{
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+
+  .hero-visual .frame-label{
+    position:absolute; bottom:-24px; left:50%; transform:translateX(-50%);
+    font-size:0.7rem; color:var(--muted); white-space:nowrap;
+  }
+  @media (min-width:860px){ .hero-visual{ display:block; } }
+
+  .peek{
+    position:relative; height:100px; margin:0 -7vw; display:flex; align-items:flex-end;
+    padding:0 7vw 14px; border-top:1px solid var(--line);
+  }
+  .peek-label{ display:flex; justify-content:space-between; width:100%; color:var(--muted); font-size:0.78rem; }
+  .peek-label .cue{ color:var(--accent-glow); animation: bob 1.6s ease-in-out infinite; }
+  @keyframes bob{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(5px);} }
+
+  /* ---------- HEADINGS ---------- */
+  .page-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:36px; flex-wrap:wrap; gap:12px; }
+  .page-head h2{ font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(2.5rem,5.5vw,3.8rem); margin:0; text-shadow:0 0 20px rgba(76,141,255,0.2); }
+  .page-head span{ color:var(--muted); font-size:0.85rem; }
+
+  /* ---------- CARDS LAYOUT ---------- */
+  #work, #skills, #achievement, #parent{ padding-bottom:60px; }
+  .grid{ display:grid; grid-template-columns:repeat(6,1fr); gap:20px; flex:1; }
+  .card{
+    background:var(--panel); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+    border:1px solid var(--line); border-radius:16px;
+    padding:28px; display:flex; flex-direction:column; justify-content:flex-start;
+    position:relative; overflow:hidden; min-height:220px; transition:all .25s ease;
+    text-decoration:none; color:inherit;
+  }
+  .card:hover{ border-color:var(--accent-glow); transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,0,0,0.4); }
+  .card::before{
+    content:""; position:absolute; top:0; right:0; width:160px; height:160px;
+    background:radial-gradient(circle, rgba(76,141,255,0.25), transparent 70%);
+    opacity:0; transition:opacity .25s ease; pointer-events:none;
+  }
+  .card:hover::before{ opacity:1; }
+  .card .num{ color:var(--accent-glow); font-size:0.8rem; margin-bottom:12px; font-weight:500; }
+  .card h3{ font-size:1.35rem; margin:0 0 10px; font-weight:600; font-family:'Inter', sans-serif; }
+  .card p{ color:var(--muted); font-size:0.92rem; line-height:1.6; margin:0 0 12px; }
+  
+  .info-list{ list-style:none; padding:0; margin:10px 0 0; display:flex; flex-direction:column; gap:8px; font-size:0.88rem; color:var(--text); }
+  .info-list li{ display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:6px; }
+  .info-list span.label{ color:var(--muted); font-family:'JetBrains Mono', monospace; font-size:0.78rem; }
+
+  .c1{ grid-column:span 3; min-height:280px; }
+  .c2{ grid-column:span 3; min-height:280px; }
+  .c3{ grid-column:span 6; min-height:240px; }
+
+  /* ---------- PARENT SECTION STYLES ---------- */
+  .parent-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .photo-box {
+    background: rgba(10, 17, 40, 0.6);
+    border: 2px dashed rgba(143, 211, 255, 0.3);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 16px;
+    min-height: 180px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+  }
+  .photo-box:hover {
+    border-color: var(--accent-glow);
+  }
+  .photo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    position: absolute;
+    inset: 0;
+  }
+  .photo-placeholder-text {
+    color: var(--muted);
+    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 1;
+  }
+  .photo-placeholder-text svg {
+    stroke: var(--accent-glow);
+    opacity: 0.8;
+  }
+
+  .parents-left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .parents-right-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .family-photo-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .family-photo-box {
+    flex: 1;
+    min-height: 320px;
+  }
+
+  footer{
+    display:flex; justify-space-between; align-items:center;
+    padding-top:40px; border-top:1px solid var(--line); margin-top:40px;
+    color:var(--muted); font-size:0.8rem; flex-wrap:wrap; gap:10px;
+  }
+  footer a{ color:var(--accent-glow); text-decoration:none; }
+  footer a:hover{ text-decoration:underline; }
+
+  /* ---------- CONTACT ---------- */
+  #contact{ padding-bottom:60px; }
+  .contact-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; flex:1; align-content:start; }
+  .contact-card{
+    background:var(--panel); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    border:1px solid var(--line); border-radius:16px;
+    padding:32px 26px; display:flex; flex-direction:column; gap:16px;
+    text-decoration:none; color:var(--text); transition:border-color .2s ease, transform .2s ease;
+  }
+  .contact-card:hover{ border-color:var(--accent-glow); transform:translateY(-4px); }
+  .contact-card .icon{
+    width:46px; height:46px; border-radius:50%; background:rgba(76,141,255,0.18);
+    display:flex; align-items:center; justify-content:center; color:var(--accent-glow);
+  }
+  .contact-card h3{ margin:0; font-size:0.85rem; color:var(--muted); font-weight:500; }
+  .contact-card .value{ font-size:1.1rem; word-break:break-word; font-weight:500; }
+
+  @media (max-width: 820px){
+    nav .links{ gap:14px; font-size:0.8rem; }
+    .grid{ grid-template-columns:1fr; }
+    .c1,.c2,.c3{ grid-column:span 1; min-height:180px; }
+    .parent-container { grid-template-columns: 1fr; }
+    .contact-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 3D Dark Blue Interactive WebGL Canvas -->
+<canvas id="webgl-bg"></canvas>
+
+<!-- NAV BAR -->
+<nav>
+  <a href="#hero" class="logo">RDC<span>.</span></a>
+  <div class="links">
+    <a href="#hero">Home</a>
+    <a href="#work">Personal Info</a>
+    <a href="#achievement">Achievement</a>
+    <a href="#parent">Parent</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact" class="cta">Contact</a>
+  </div>
+</nav>
+
+<div class="scroller">
+
+  <!-- PAGE 1: HERO SECTION -->
+  <section id="hero">
+    <div class="beam"></div>
+    <div class="hero-wrap">
+      <div class="hero-body">
+        <div class="eyebrow mono animate-eyebrow">// building for the web</div>
+        <h1 class="animate-title">Rheigne Dela Cruz.</h1>
+        <p class="hero-desc animate-desc">BSIT student majoring in Web Technology at the University of the Cordilleras, Baguio.</p>
+        <p class="hero-sub animate-sub">A look at my background, skills, and the projects I've built along the way — all in one place.</p>
+        <div class="hero-actions animate-actions">
+          <a href="#work" class="btn btn-solid">Information →</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="profile-img-wrap">
+          <img src="1793674667.6581821.jpg" alt="Rheigne Dela Cruz" onerror="this.onerror=null; this.src='https://placehold.co/300x380/10183A/8FD3FF?text=Rheigne+Dela+Cruz';">
+        </div>
+        <div class="frame-label mono">// profile photo</div>
+      </div>
+    </div>
+
+    <div class="peek">
+      <div class="peek-label">
+        <span class="mono">education, skills &amp; experience below</span>
+        <span class="mono cue">scroll ↓</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 2: PERSONAL INFORMATION SECTION -->
+  <section id="work">
+    <div class="page-head">
+      <h2>Personal Information</h2>
+    </div>
+
+    <div class="grid">
+      <!-- Profile Details Card -->
+      <div class="card c1">
+        <span class="num mono">01 // PERSONAL PROFILE</span>
+        <h3>Personal Details</h3>
+        <p>Overview of primary credentials and academic affiliation.</p>
+        <ul class="info-list">
+          <li><span class="label">FULL NAME</span> <strong>Rheigne Dela Cruz</strong></li>
+          <li><span class="label">DEGREE</span> <strong>BS Information Technology</strong></li>
+          <li><span class="label">MAJOR</span> <strong>Web Technology</strong></li>
+          <li><span class="label">UNIVERSITY</span> <strong>University of the Cordilleras</strong></li>
+          <li><span class="label">LOCATION</span> <strong>Baguio City, Philippines</strong></li>
+        </ul>
+      </div>
+
+      <!-- Education & Focus Card -->
+      <div class="card c2">
+        <span class="num mono">02 // ACADEMICS & EDUCATION</span>
+        <h3>Education &amp; Focus</h3>
+        <p>Academic path and core technical direction.</p>
+        <ul class="info-list">
+          <li><span class="label">STATUS</span> <strong>Undergraduate IT Student</strong></li>
+          <li><span class="label">SPECIALIZATION</span> <strong>Web Tech</strong></li>
+          <li><span class="label">YEAR LEVEL</span> <strong>1st Year</strong></li>
+          <li><span class="label">GOAL</span> <strong>To be a successful and great IT</strong></li>
+        </ul>
+      </div>
+
+      <!-- Technical Overview Card -->
+      <div class="card c3">
+        <span class="num mono">03 // SUMMARY & HIGHLIGHTS</span>
+        <h3>Key Highlights &amp; Goals</h3>
+        <p>Immediate details regarding experience, parent/guardian contact, and reachable channels.</p>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-top:12px;">
+          <div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:10px; border:1px solid var(--line);">
+            <div class="mono" style="font-size:0.75rem; color:var(--accent-glow); margin-bottom:4px;">DIRECT CONTACT</div>
+            <div style="font-size:0.9rem;"><strong>Email:</strong> delacruzrheigne@gmail.com</div>
+            <div style="font-size:0.9rem; margin-top:4px;"><strong>Phone:</strong> +63 962 236 8782</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:10px; border:1px solid var(--line);">
+            <div class="mono" style="font-size:0.75rem; color:var(--accent-glow); margin-bottom:4px;">ACADEMIC FOCUS</div>
+            <div style="font-size:0.9rem;">Learning web development, design, and practical tech skills.</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:10px; border:1px solid var(--line);">
+            <div class="mono" style="font-size:0.75rem; color:var(--accent-glow); margin-bottom:4px;">PARENT / GUARDIAN</div>
+            <div style="font-size:0.9rem;"><strong>Contact Person:</strong> Mr. Sherwin Dela Cruz &amp; Mrs. Dale Dela Cruz</div>
+            <div style="font-size:0.9rem; margin-top:4px;"><strong>Residence:</strong> Baguio City, Benguet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <span><a href="#hero">← Back Home</a></span>
+      <span><a href="#achievement">Achievement</a> &nbsp;·&nbsp; <a href="#parent">Parent</a> &nbsp;·&nbsp; <a href="#skills">Skills</a></span>
+    </footer>
+  </section>
+
+  <!-- PAGE 3: ACHIEVEMENT SECTION -->
+  <section id="achievement">
+    <div class="page-head">
+      <h2>Achievement</h2>
+      <span class="mono">RECOGNITIONS &amp; EXPERIENCE</span>
+    </div>
+    <div class="grid">
+      <div class="card c1">
+        <span class="num mono">01 // HONORS</span>
+        <h3>Academic Honors</h3>
+        <p>Recognized for consistent academic performance, dedication to learning, and excellence in IT coursework.</p>
+      </div>
+      <div class="card c2">
+        <span class="num mono">02 // COMPETITIONS</span>
+        <h3>Competition &amp; Awards</h3>
+        <p>Active participant and achiever in academic competitions, tech challenges, and school events.</p>
+      </div>
+      <div class="card c3">
+        <span class="num mono">03 // PRACTICAL EXPERIENCE</span>
+        <h3>Work Immersion</h3>
+        <p>Hands-on training and exposure in real-world IT environments, developing essential industry skills and teamwork.</p>
+      </div>
+    </div>
+    <footer>
+      <span><a href="#work">← Back to Personal Information</a></span>
+      <span><a href="#parent">Next: Parent →</a></span>
+    </footer>
+  </section>
+
+  <!-- PAGE 4: PARENT SECTION -->
+  <section id="parent">
+    <div class="page-head">
+      <h2>Parent</h2>
+      <span class="mono">FAMILY &amp; GUARDIANS</span>
+    </div>
+
+    <div class="parent-container">
+      
+      <!-- LEFT SIDE: Separate Mother & Father Cards with Photo Slots & Custom Text Areas -->
+      <div class="parents-left-col">
+        <!-- Father Card -->
+        <div class="card" style="padding: 22px;">
+          <span class="num mono">FATHER // DETAILS &amp; APPRECIATION</span>
+          <h3 style="margin-bottom: 12px;">Mr. Sherwin Dela Cruz</h3>
+          
+          <div style="display: grid; grid-template-columns: 140px 1fr; gap: 16px; align-items: stretch; margin-top: 8px;">
+            <!-- Photo Slot for Dad -->
+            <div class="photo-box">
+              <div class="photo-placeholder-text">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span>Photo with Dad</span>
+              </div>
+            </div>
+
+            <!-- Custom Text / Appreciation Space for Dad -->
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; justify-content: center;">
+              <p style="margin: 0; font-size: 0.88rem; color: var(--muted); line-height: 1.6; font-style: italic;">
+                Write your information, notes, and message of appreciation for your father here...
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mother Card -->
+        <div class="card" style="padding: 22px;">
+          <span class="num mono">MOTHER // DETAILS &amp; APPRECIATION</span>
+          <h3 style="margin-bottom: 12px;">Mrs. Dale Dela Cruz</h3>
+          
+          <div style="display: grid; grid-template-columns: 140px 1fr; gap: 16px; align-items: stretch; margin-top: 8px;">
+            <!-- Photo Slot for Mom -->
+            <div class="photo-box">
+              <div class="photo-placeholder-text">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span>Photo with Mom</span>
+              </div>
+            </div>
+
+            <!-- Custom Text / Appreciation Space for Mom -->
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; justify-content: center;">
+              <p style="margin: 0; font-size: 0.88rem; color: var(--muted); line-height: 1.6; font-style: italic;">
+                Write your information, notes, and message of appreciation for your mother here...
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE: Family Photo Card -->
+      <div class="parents-right-col">
+        <div class="card family-photo-card">
+          <span class="num mono">FAMILY GALLERY // PHOTO</span>
+          <h3>Family Picture</h3>
+          <p>Memories and moments together with my parents.</p>
+          
+          <!-- Photo Slot for Family Picture -->
+          <div class="photo-box family-photo-box" style="margin-top: 12px;">
+            <div class="photo-placeholder-text">
+              <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span style="font-weight: 500; font-size: 0.95rem;">Insert Family Picture Here</span>
+              <span style="font-size: 0.75rem; opacity: 0.8;">Baguio City, Benguet</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      <span><a href="#achievement">← Back: Achievement</a></span>
+      <span><a href="#skills">Next: Skills →</a></span>
+    </footer>
+  </section>
+
+  <!-- PAGE 5: SKILLS SECTION -->
+  <section id="skills">
+    <div class="page-head"><h2>Skills</h2></div>
+    <div class="grid">
+      <div class="card c1">
+        <span class="num mono">01 // FRONTEND DEVELOPMENT</span>
+        <h3>Web Interfaces &amp; Systems</h3>
+        <p>Building responsive, accessible, and high-performance user interfaces using modern CSS frameworks and semantic HTML5.</p>
+        <ul class="info-list" style="margin-top:14px;">
+          <li><span class="label">TECHNOLOGIES</span> <strong>HTML5, CSS3, JavaScript (ES6+)</strong></li>
+          <li><span class="label">FRAMEWORKS</span> <strong>Tailwind CSS, React</strong></li>
+        </ul>
+      </div>
+      <div class="card c2">
+        <span class="num mono">02 // INTERACTIVE GRAPHICS</span>
+        <h3>3D Web &amp; Shaders</h3>
+        <p>Designing immersive web experiences using WebGL and Three.js for interactive background visualizers and canvas rendering.</p>
+        <ul class="info-list" style="margin-top:14px;">
+          <li><span class="label">LIBRARIES</span> <strong>Three.js, WebGL, Canvas API</strong></li>
+          <li><span class="label">ANIMATIONS</span> <strong>CSS3 Keyframes, GSAP Logic</strong></li>
+        </ul>
+      </div>
+      <div class="card c3">
+        <span class="num mono">03 // TOOLS & METHODOLOGIES</span>
+        <h3>Software &amp; Version Control</h3>
+        <p>Proficient with essential web technology tooling, source code control, and collaborative interface design tools.</p>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-top:12px;">
+          <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; border:1px solid var(--line);">
+            <strong style="color:var(--accent-glow);">Git &amp; GitHub</strong>
+            <p style="font-size:0.82rem; margin:4px 0 0; color:var(--muted);">Repository management, branching &amp; deployment.</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; border:1px solid var(--line);">
+            <strong style="color:var(--accent-glow);">Figma &amp; UI Design</strong>
+            <p style="font-size:0.82rem; margin:4px 0 0; color:var(--muted);">Prototyping, layout design &amp; typography scaling.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <span><a href="#parent">← Back: Parent</a></span>
+      <span><a href="#contact">Next: Contact →</a></span>
+    </footer>
+  </section>
+
+  <!-- PAGE 6: CONTACT SECTION -->
+  <section id="contact">
+    <div class="page-head"><h2>Contact</h2></div>
+    <div class="contact-grid">
+      <a href="tel:+639622368782" class="contact-card">
+        <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+        <h3 class="mono">PHONE</h3>
+        <div class="value">0962 236 8782</div>
+      </a>
+      <a href="mailto:delacruzrheigne@gmail.com" class="contact-card">
+        <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg></div>
+        <h3 class="mono">GMAIL</h3>
+        <div class="value">delacruzrheigne@gmail.com</div>
+      </a>
+      <a href="https://www.facebook.com/search/top?q=Rheignekim%20Dela%20Cruz" target="_blank" rel="noopener" class="contact-card">
+        <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div>
+        <h3 class="mono">FACEBOOK</h3>
+        <div class="value">Rheignekim Dela Cruz</div>
+      </a>
+    </div>
+    <footer>
+      <span><a href="#skills">← Back: Skills</a></span>
+      <span><a href="#hero">Back to top ↑</a></span>
+    </footer>
+  </section>
+
+</div>
+
+<!-- 3D WebGL Background Engine -->
+<script>
+  window.addEventListener('load', function () {
+    const canvas = document.getElementById('webgl-bg');
+    if (!canvas) return;
+
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 35;
+
+    const ambientLight = new THREE.AmbientLight(0x0a1128, 3.0);
+    scene.add(ambientLight);
+
+    const light1 = new THREE.PointLight(0x4c8dff, 3.5, 120);
+    light1.position.set(25, 25, 25);
+    scene.add(light1);
+
+    const light2 = new THREE.PointLight(0x8fd3ff, 2.5, 120);
+    light2.position.set(-25, -25, -10);
+    scene.add(light2);
+
+    const mainGroup = new THREE.Group();
+    scene.add(mainGroup);
+
+    const meshGeo = new THREE.IcosahedronGeometry(12, 2);
+    const meshMat = new THREE.MeshPhongMaterial({
+      color: 0x10183a,
+      emissive: 0x0a1128,
+      specular: 0x8fd3ff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.25
+    });
+    const mainMesh = new THREE.Mesh(meshGeo, meshMat);
+    mainGroup.add(mainMesh);
+
+    const particlesCount = 120;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particlesCount * 3);
+
+    for (let i = 0; i < particlesCount * 3; i += 3) {
+      positions[i] = (Math.random() - 0.5) * 90;
+      positions[i + 1] = (Math.random() - 0.5) * 90;
+      positions[i + 2] = (Math.random() - 0.5) * 60;
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+    const pMaterial = new THREE.PointsMaterial({
+      color: 0x8fd3ff,
+      size: 0.6,
+      transparent: true,
+      opacity: 0.7
+    });
+
+    const particles = new THREE.Points(geometry, pMaterial);
+    mainGroup.add(particles);
+
+    let mouseX = 0, mouseY = 0;
+    let targetX = 0, targetY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX - window.innerWidth / 2) * 0.0008;
+      mouseY = (e.clientY - window.innerHeight / 2) * 0.0008;
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      targetX += (mouseX - targetX) * 0.05;
+      targetY += (mouseY - targetY) * 0.05;
+
+      mainMesh.rotation.x += 0.002;
+      mainMesh.rotation.y += 0.003;
+      particles.rotation.y -= 0.001;
+
+      mainGroup.rotation.y = targetX * 1.2;
+      mainGroup.rotation.x = -targetY * 1.2;
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  });
+</script>
+</body>
+</html>
