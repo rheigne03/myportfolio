@@ -7,9 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<!-- Three.js for 3D Dark Blue Interactive Background -->
+<!-- Three.js for 3D Interactive Background -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
 <style>
   :root{
     --bg: #0A1128;
@@ -17,6 +16,9 @@
     --panel-solid: #10183A;
     --accent: #4C8DFF;
     --accent-glow: #8FD3FF;
+    --gold: #FFD700;
+    --gold-glow: #FFE57F;
+    --gold-border: rgba(255, 215, 0, 0.45);
     --text: #F3F6FF;
     --muted: #8C9BC4;
     --line: rgba(255,255,255,0.12);
@@ -27,7 +29,7 @@
   html,body{height:100%; margin:0; scroll-behavior:smooth;}
   body{ background:var(--bg); color:var(--text); font-family:'Inter', sans-serif; overflow-x:hidden; }
   .mono{ font-family:'JetBrains Mono', monospace; letter-spacing:0.02em; }
-
+  
   /* ---------- 3D CANVAS BACKGROUND ---------- */
   #webgl-bg {
     position: fixed;
@@ -38,7 +40,7 @@
     z-index: 0;
     pointer-events: none;
   }
-
+  
   /* ---------- NAV ---------- */
   nav{
     position:fixed; top:0; left:0; right:0; z-index:50;
@@ -49,16 +51,16 @@
     border-bottom:1px solid var(--line); font-size:0.85rem;
   }
   nav .logo{ font-family:'Instrument Serif', serif; font-size:1.5rem; text-decoration:none; color:var(--text); }
-  nav .logo span{ color:var(--accent-glow); }
+  nav .logo span{ color:var(--gold-glow); }
   nav .links{ display:flex; gap:20px; align-items:center; }
   nav a{ color:var(--muted); text-decoration:none; transition:color .15s ease; font-weight:500; }
-  nav a:hover, nav a.active{ color:var(--text); }
+  nav a:hover, nav a.active{ color:var(--gold-glow); }
   
   nav .cta{
-    border:1px solid var(--line); border-radius:999px; padding:8px 18px;
-    color:var(--text) !important; transition:border-color .2s ease, background .2s ease;
+    border:1px solid var(--gold-border); border-radius:999px; padding:8px 18px;
+    color:var(--text) !important; transition:all .2s ease;
   }
-  nav .cta:hover{ border-color:var(--accent-glow); background:rgba(76,141,255,0.15); }
+  nav .cta:hover{ border-color:var(--gold); background:rgba(255,215,0,0.15); box-shadow:0 0 15px rgba(255,215,0,0.3); }
 
   .scroller{ height:100vh; overflow-y:auto; scroll-snap-type:y mandatory; position:relative; z-index:10; }
   section{
@@ -66,8 +68,8 @@
     display:flex; flex-direction:column; padding:0 7vw;
     padding-top:96px; z-index:10;
   }
-
-  /* ---------- HERO ANIMATIONS ---------- */
+  
+  /* ---------- HERO ANIMATIONS & GOLD TOUCHES ---------- */
   @keyframes heroTitleReveal {
     0% { opacity: 0; transform: translateY(35px) scale(0.96); filter: blur(10px); }
     100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
@@ -76,138 +78,116 @@
     0% { opacity: 0; transform: translateY(25px); }
     100% { opacity: 1; transform: translateY(0); }
   }
-
   .animate-title { animation: heroTitleReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
   .animate-eyebrow { opacity: 0; animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; }
   .animate-desc { opacity: 0; animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; }
   .animate-sub { opacity: 0; animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards; }
   .animate-actions { opacity: 0; animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards; }
 
-  /* ---------- HERO ---------- */
   #hero{ justify-content:center; overflow:hidden; }
   .beam{
     position:absolute; top:-20%; right:-10%; width:70vw; height:160%;
-    background:linear-gradient(115deg, transparent 40%, rgba(76,141,255,0.18) 48%, rgba(143,211,255,0.12) 52%, transparent 60%);
+    background:linear-gradient(115deg, transparent 40%, rgba(255,215,0,0.12) 48%, rgba(143,211,255,0.12) 52%, transparent 60%);
     pointer-events:none; animation: drift 16s ease-in-out infinite alternate;
   }
   @keyframes drift{ from{ transform:translateX(0) rotate(0deg);} to{ transform:translateX(-30px) rotate(2deg);} }
-
   .hero-wrap{ flex:1; display:flex; align-items:center; gap:60px; }
   .hero-body{ max-width:720px; }
-  .eyebrow{ color:var(--muted); font-size:0.85rem; margin-bottom:18px; }
+  .eyebrow{ color:var(--gold-glow); font-size:0.85rem; margin-bottom:18px; }
   
   h1{
     font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(3.5rem, 8.5vw, 6.5rem);
     line-height:0.98; margin:0 0 24px; color:var(--text); letter-spacing:-0.02em;
-    text-shadow: 0 0 35px rgba(76, 141, 255, 0.25);
+    text-shadow: 0 0 35px rgba(255, 215, 0, 0.25);
   }
-  h1 em{ font-style:italic; color:var(--accent-glow); }
+  h1 em{ font-style:italic; color:var(--gold-glow); }
   .hero-desc{ color:var(--text); font-size:1.15rem; max-width:540px; line-height:1.6; margin-bottom:14px; font-weight:500; }
   .hero-sub{ color:var(--muted); font-size:1.05rem; max-width:520px; line-height:1.6; margin-bottom:36px; }
   .hero-actions{ display:flex; gap:16px; align-items:center; }
   
   .btn{
     padding:14px 30px; border-radius:999px; font-size:0.95rem; font-weight:500; cursor:pointer;
-    border:1px solid var(--line); color:var(--text); background:rgba(16, 24, 58, 0.6); text-decoration:none;
-    display:inline-flex; align-items:center; gap:8px; transition:all .2s ease;
+    border:1px solid var(--gold-border); color:var(--text); background:rgba(16, 24, 58, 0.6); text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px; transition:all .25s ease;
     backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
   }
-  .btn-solid{ background:var(--accent); border-color:var(--accent); color:#06112B; font-weight:700; box-shadow: 0 0 25px rgba(76, 141, 255, 0.4); }
-  .btn:hover{ border-color:var(--accent-glow); transform:translateY(-2px); }
-  .btn-solid:hover{ background:var(--accent-glow); border-color:var(--accent-glow); box-shadow: 0 0 35px rgba(143, 211, 255, 0.6); }
+  .btn-solid{ background:var(--gold); border-color:var(--gold); color:#0A1128; font-weight:700; box-shadow: 0 0 25px rgba(255, 215, 0, 0.4); }
+  .btn:hover{ border-color:var(--gold-glow); transform:translateY(-2px); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+  .btn-solid:hover{ background:var(--gold-glow); border-color:var(--gold-glow); box-shadow: 0 0 35px rgba(255, 229, 127, 0.7); }
 
-  /* Hero Visual & Profile Picture */
-  .hero-visual{ flex-shrink:0; width:300px; height:380px; position:relative; display:none; }
-
+  /* Profile Picture & Clickable Gold Glow */
+  .hero-visual{ flex-shrink:0; width:300px; height:380px; position:relative; display:none; cursor:pointer; }
   .hero-visual .profile-img-wrap{
     width:100%; height:100%; border-radius:20px; overflow:hidden;
-    border:2px solid var(--accent); background:var(--panel);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(76,141,255,0.3);
-    position:relative; transition:transform 0.3s ease, border-color 0.3s ease;
+    border:2px solid var(--gold-border); background:var(--panel);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px rgba(255,215,0,0.2);
+    position:relative; transition:all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .hero-visual .profile-img-wrap:hover{
-    transform:scale(1.02);
-    border-color:var(--accent-glow);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(143,211,255,0.5);
+  .hero-visual .profile-img-wrap:hover, .hero-visual .profile-img-wrap.gold-active{
+    transform:scale(1.03);
+    border-color:var(--gold-glow);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 45px rgba(255,215,0,0.85);
   }
   .hero-visual img{
     width:100%; height:100%; object-fit:cover; display:block;
   }
-
   .hero-visual .frame-label{
     position:absolute; bottom:-24px; left:50%; transform:translateX(-50%);
-    font-size:0.7rem; color:var(--muted); white-space:nowrap;
+    font-size:0.7rem; color:var(--gold-glow); white-space:nowrap;
   }
   @media (min-width:860px){ .hero-visual{ display:block; } }
-
+  
   .peek{
     position:relative; height:100px; margin:0 -7vw; display:flex; align-items:flex-end;
     padding:0 7vw 14px; border-top:1px solid var(--line);
   }
   .peek-label{ display:flex; justify-content:space-between; width:100%; color:var(--muted); font-size:0.78rem; }
-  .peek-label .cue{ color:var(--accent-glow); animation: bob 1.6s ease-in-out infinite; }
+  .peek-label .cue{ color:var(--gold-glow); animation: bob 1.6s ease-in-out infinite; }
   @keyframes bob{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(5px);} }
 
   /* ---------- HEADINGS ---------- */
   .page-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:36px; flex-wrap:wrap; gap:12px; }
-  .page-head h2{ font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(2.5rem,5.5vw,3.8rem); margin:0; text-shadow:0 0 20px rgba(76,141,255,0.2); }
-  .page-head span{ color:var(--muted); font-size:0.85rem; }
+  .page-head h2{ font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(2.5rem,5.5vw,3.8rem); margin:0; text-shadow:0 0 20px rgba(255,215,0,0.25); }
+  .page-head span{ color:var(--gold-glow); font-size:0.85rem; }
 
-  /* ---------- CARDS LAYOUT ---------- */
+  /* ---------- CARDS LAYOUT WITH GOLD GLOW BORDERS ---------- */
   #work, #skills, #achievement, #parent{ padding-bottom:60px; }
   .grid{ display:grid; grid-template-columns:repeat(6,1fr); gap:20px; flex:1; }
+  
   .card{
     background:var(--panel); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-    border:1px solid var(--line); border-radius:16px;
+    border:1px solid var(--gold-border); border-radius:16px;
     padding:28px; display:flex; flex-direction:column; justify-content:flex-start;
-    position:relative; overflow:hidden; min-height:220px; transition:all .25s ease;
+    position:relative; overflow:hidden; min-height:220px; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     text-decoration:none; color:inherit;
   }
-  .card:hover{ border-color:var(--accent-glow); transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,0,0,0.4); }
+  .card:hover{ 
+    border-color:var(--gold-glow); 
+    transform:translateY(-4px); 
+    box-shadow: 0 12px 35px rgba(0,0,0,0.5), 0 0 30px rgba(255, 215, 0, 0.5); 
+  }
   .card::before{
-    content:""; position:absolute; top:0; right:0; width:160px; height:160px;
-    background:radial-gradient(circle, rgba(76,141,255,0.25), transparent 70%);
-    opacity:0; transition:opacity .25s ease; pointer-events:none;
+    content:""; position:absolute; top:0; right:0; width:180px; height:180px;
+    background:radial-gradient(circle, rgba(255, 215, 0, 0.3), transparent 70%);
+    opacity:0; transition:opacity .3s ease; pointer-events:none;
   }
   .card:hover::before{ opacity:1; }
-  .card .num{ color:var(--accent-glow); font-size:0.8rem; margin-bottom:12px; font-weight:500; }
+  .card .num{ color:var(--gold-glow); font-size:0.8rem; margin-bottom:12px; font-weight:500; }
   .card h3{ font-size:1.35rem; margin:0 0 10px; font-weight:600; font-family:'Inter', sans-serif; }
   .card p{ color:var(--muted); font-size:0.92rem; line-height:1.6; margin:0 0 12px; }
   
   .info-list{ list-style:none; padding:0; margin:10px 0 0; display:flex; flex-direction:column; gap:8px; font-size:0.88rem; color:var(--text); }
   .info-list li{ display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:6px; }
   .info-list span.label{ color:var(--muted); font-family:'JetBrains Mono', monospace; font-size:0.78rem; }
-
+  
   .c1{ grid-column:span 3; min-height:280px; }
   .c2{ grid-column:span 3; min-height:280px; }
   .c3{ grid-column:span 6; min-height:240px; }
 
-  /* ---------- QUOTE (Personal Information page) ---------- */
-  .quote-box{
-    margin-top:clamp(10px, 2vh, 20px);
-    text-align:center;
-    padding:clamp(10px, 2vh, 18px) 24px;
-    border-top:1px solid var(--line);
-  }
-  .quote-box .quote-text{
-    font-family:'Instrument Serif', serif; font-style:italic;
-    font-size:clamp(1.1rem, 2.8vh, 1.5rem); line-height:1.4;
-    color:var(--accent-glow); margin:0;
-    text-shadow:0 0 20px rgba(76,141,255,0.25);
-  }
-  .quote-box .quote-tag{ color:var(--muted); font-size:0.72rem; margin-top:6px; }
-
-  /* ---------- PARENT SECTION STYLES ---------- */
-  .parent-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    width: 100%;
-  }
-
+  /* ---------- PHOTO BOX & PLACEHOLDERS ---------- */
   .photo-box {
     background: rgba(10, 17, 40, 0.6);
-    border: 2px dashed rgba(143, 211, 255, 0.3);
+    border: 2px dashed var(--gold-border);
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -215,21 +195,14 @@
     justify-content: center;
     text-align: center;
     padding: 16px;
-    min-height: 180px;
+    min-height: 140px;
     position: relative;
     overflow: hidden;
-    transition: border-color 0.2s ease;
+    transition: all 0.25s ease;
   }
   .photo-box:hover {
-    border-color: var(--accent-glow);
-  }
-  .photo-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
-    position: absolute;
-    inset: 0;
+    border-color: var(--gold-glow);
+    box-shadow: 0 0 20px rgba(255,215,0,0.3);
   }
   .photo-placeholder-text {
     color: var(--muted);
@@ -241,56 +214,67 @@
     z-index: 1;
   }
   .photo-placeholder-text svg {
-    stroke: var(--accent-glow);
-    opacity: 0.8;
+    stroke: var(--gold-glow);
+    opacity: 0.85;
   }
 
-  .parents-left-col {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  /* ---------- QUOTE BOX ---------- */
+  .quote-box{
+    margin-top:clamp(10px, 2vh, 20px);
+    text-align:center;
+    padding:clamp(10px, 2vh, 18px) 24px;
+    border-top:1px solid var(--gold-border);
   }
-
-  .parents-right-col {
-    display: flex;
-    flex-direction: column;
+  .quote-box .quote-text{
+    font-family:'Instrument Serif', serif; font-style:italic;
+    font-size:clamp(1.1rem, 2.8vh, 1.5rem); line-height:1.4;
+    color:var(--gold-glow); margin:0;
+    text-shadow:0 0 20px rgba(255,215,0,0.3);
   }
+  .quote-box .quote-tag{ color:var(--muted); font-size:0.72rem; margin-top:6px; }
 
-  .family-photo-card {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
+  /* ---------- PARENT CONTAINER ---------- */
+  .parent-container { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; }
+  .parents-left-col { display: flex; flex-direction: column; gap: 20px; }
+  .parents-right-col { display: flex; flex-direction: column; }
+  .family-photo-card { height: 100%; display: flex; flex-direction: column; }
+  .family-photo-box { flex: 1; min-height: 320px; }
 
-  .family-photo-box {
-    flex: 1;
-    min-height: 320px;
-  }
-
-  footer{
-    display:flex; justify-space-between; align-items:center;
-    padding-top:40px; border-top:1px solid var(--line); margin-top:40px;
-    color:var(--muted); font-size:0.8rem; flex-wrap:wrap; gap:10px;
-  }
-  footer a{ color:var(--accent-glow); text-decoration:none; }
-  footer a:hover{ text-decoration:underline; }
-
-  /* ---------- CONTACT ---------- */
+  /* ---------- CONTACT CARDS ---------- */
   #contact{ padding-bottom:60px; }
   .contact-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; flex:1; align-content:start; }
   .contact-card{
     background:var(--panel); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
-    border:1px solid var(--line); border-radius:16px;
+    border:1px solid var(--gold-border); border-radius:16px;
     padding:32px 26px; display:flex; flex-direction:column; gap:16px;
-    text-decoration:none; color:var(--text); transition:border-color .2s ease, transform .2s ease;
+    text-decoration:none; color:var(--text); transition:all .25s ease;
   }
-  .contact-card:hover{ border-color:var(--accent-glow); transform:translateY(-4px); }
+  .contact-card:hover{ border-color:var(--gold-glow); transform:translateY(-4px); box-shadow:0 0 30px rgba(255,215,0,0.4); }
   .contact-card .icon{
-    width:46px; height:46px; border-radius:50%; background:rgba(76,141,255,0.18);
-    display:flex; align-items:center; justify-content:center; color:var(--accent-glow);
+    width:46px; height:46px; border-radius:50%; background:rgba(255,215,0,0.15);
+    display:flex; align-items:center; justify-content:center; color:var(--gold-glow);
   }
   .contact-card h3{ margin:0; font-size:0.85rem; color:var(--muted); font-weight:500; }
   .contact-card .value{ font-size:1.1rem; word-break:break-word; font-weight:500; }
+
+  /* PAGER CONTAINER */
+  .pager{
+    position:fixed; right:7vw; bottom:calc(22px + env(safe-area-inset-bottom, 0px));
+    z-index:60; display:flex; gap:10px;
+  }
+  .pager-btn{
+    font-family:'JetBrains Mono', monospace; font-size:0.8rem; letter-spacing:0.02em;
+    color:var(--text); background:var(--panel); border:1px solid var(--gold-border);
+    border-radius:10px; padding:10px 18px; cursor:pointer;
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    transition:all .2s ease;
+  }
+  .pager-btn:hover:not(:disabled){
+    border-color:var(--gold-glow); background:rgba(255,215,0,0.2); transform:translateY(-2px);
+    box-shadow: 0 0 15px rgba(255,215,0,0.3);
+  }
+  .pager-next{ border-color:var(--gold); background:rgba(255,215,0,0.18); }
+  .pager-btn:disabled{ opacity:0.3; cursor:not-allowed; }
 
   @media (max-width: 820px){
     nav .links{ gap:14px; font-size:0.8rem; }
@@ -300,14 +284,9 @@
     .contact-grid{ grid-template-columns:1fr; }
   }
 
-  /* =====================================================================
-     PAGER: one page at a time, no scrolling, with "Go back" and "Next"
-     boxes at the bottom right. Everything above this line is your
-     original design; this block only changes how pages are shown.
-     ===================================================================== */
+  /* PAGER FUNCTIONALITY & SCALING */
   html, body{ overflow:hidden; }
   .scroller{ height:100vh; height:100dvh; overflow:hidden; scroll-snap-type:none; }
-
   .scroller > section{
     position:absolute; inset:0; display:none; min-height:0; height:100%;
     overflow:hidden; scroll-snap-align:none;
@@ -315,55 +294,12 @@
   .scroller > section.active{ display:flex; animation: pageIn .35s ease both; }
   @keyframes pageIn{ from{ opacity:0; } to{ opacity:1; } }
 
-  /* space for the fixed nav on top and the Next / Go back boxes at the bottom */
   .scroller > section, #work, #achievement, #parent, #skills, #contact{
     padding:88px 7vw 92px;
   }
   #hero{ padding-bottom:0; }
-
-  /* holds each page's content so it can be shrunk to fit if the screen is short */
   .page-inner{ transform-origin:top left; width:100%; }
 
-  /* slightly tighter spacing on shorter screens so each page fits without scrolling */
-  h1{ font-size:clamp(3rem, min(8.5vw, 13vh), 6.5rem); }
-  .hero-visual{ width:min(300px, 40vh); height:min(380px, 51vh); }
-  .hero-sub{ margin-bottom:clamp(16px, 4vh, 36px); }
-  .peek{ height:84px; }
-
-  .page-head{ margin-bottom:clamp(10px, 2.6vh, 28px); }
-  .page-head h2{ font-size:clamp(1.9rem, min(5.5vw, 6.6vh), 3.8rem); }
-  .grid{ gap:clamp(10px, 2vh, 20px); }
-  .card{ padding:clamp(14px, 2.6vh, 28px) clamp(16px, 2vw, 28px); min-height:0; }
-  .c1, .c2, .c3{ min-height:0; }
-  .card h3{ font-size:clamp(1.05rem, 2.7vh, 1.35rem); margin-bottom:clamp(4px, 1vh, 10px); }
-  .card p{ font-size:clamp(0.8rem, 2vh, 0.92rem); line-height:1.5; margin-bottom:clamp(6px, 1.2vh, 12px); }
-  .card .num{ margin-bottom:clamp(6px, 1.2vh, 12px); }
-  .info-list{ gap:clamp(4px, 1vh, 8px); margin-top:clamp(4px, 1vh, 10px); font-size:clamp(0.78rem, 1.9vh, 0.88rem); }
-  .info-list li{ padding-bottom:clamp(3px, 0.7vh, 6px); }
-  .photo-box{ min-height:clamp(110px, 20vh, 180px); }
-  .family-photo-box{ min-height:clamp(150px, 30vh, 320px); }
-  .parents-left-col{ gap:clamp(10px, 2vh, 20px); }
-  .contact-card{ padding:clamp(18px, 3.6vh, 32px) 26px; }
-
-  /* the two small boxes, bottom right of every page */
-  .pager{
-    position:fixed; right:7vw; bottom:calc(22px + env(safe-area-inset-bottom, 0px));
-    z-index:60; display:flex; gap:10px;
-  }
-  .pager-btn{
-    font-family:'JetBrains Mono', monospace; font-size:0.8rem; letter-spacing:0.02em;
-    color:var(--text); background:var(--panel); border:1px solid var(--line);
-    border-radius:10px; padding:10px 18px; cursor:pointer;
-    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
-    transition:border-color .2s ease, background .2s ease, transform .2s ease, opacity .2s ease;
-  }
-  .pager-btn:hover:not(:disabled){
-    border-color:var(--accent-glow); background:rgba(76,141,255,0.2); transform:translateY(-2px);
-  }
-  .pager-next{ border-color:var(--accent); background:rgba(76,141,255,0.18); }
-  .pager-btn:disabled{ opacity:0.3; cursor:not-allowed; }
-
-  /* phones: not enough room to fit everything on one screen, so a page scrolls inside itself */
   @media (max-width: 820px){
     .scroller > section, #hero{ overflow-y:auto; }
     .page-inner{ transform:none !important; width:100% !important; }
@@ -372,7 +308,7 @@
 </head>
 <body>
 
-<!-- 3D Dark Blue Interactive WebGL Canvas -->
+<!-- 3D WebGL Canvas with Dark Blue Mesh, Cyan & Gold Sparkle Particles -->
 <canvas id="webgl-bg"></canvas>
 
 <!-- NAV BAR -->
@@ -380,8 +316,8 @@
   <a href="#hero" class="logo">RDC<span>.</span></a>
   <div class="links">
     <a href="#hero">Home</a>
-    <a href="#work">Personal Info</a>
-    <a href="#achievement">Achievement</a>
+    <a href="#work">Personal Information</a>
+    <a href="#achievement">Achievements</a>
     <a href="#parent">Parent</a>
     <a href="#skills">Skills</a>
     <a href="#contact" class="cta">Contact</a>
@@ -389,31 +325,30 @@
 </nav>
 
 <div class="scroller">
-
   <!-- PAGE 1: HERO SECTION -->
   <section id="hero" class="active">
     <div class="beam"></div>
     <div class="hero-wrap">
       <div class="hero-body">
         <div class="eyebrow mono animate-eyebrow">// building for the web</div>
-        <h1 class="animate-title">Rheigne Dela Cruz.</h1>
+        <h1 class="animate-title">Rheigne Dela Cruz<em>.</em></h1>
         <p class="hero-desc animate-desc">BSIT student majoring in Web Technology at the University of the Cordilleras, Baguio.</p>
         <p class="hero-sub animate-sub">A look at my background, skills, and the projects I've built along the way — all in one place.</p>
         <div class="hero-actions animate-actions">
           <a href="#work" class="btn btn-solid">Personal Information →</a>
         </div>
       </div>
-      <div class="hero-visual">
-        <div class="profile-img-wrap">
-          <img src="./my photo.jpg" alt="Rheigne Dela Cruz" onerror="this.onerror=null; this.src='https://placehold.co/300x380/10183A/8FD3FF?text=Rheigne+Dela+Cruz';">
+      <div class="hero-visual" id="heroVisual">
+        <div class="profile-img-wrap" id="profileWrap">
+          <img src="./my photo.jpg" alt="Rheigne Dela Cruz" onerror="this.onerror=null; this.src='https://placehold.co/300x380/10183A/FFE57F?text=Rheigne+Dela+Cruz';">
         </div>
-        <div class="frame-label mono">// profile photo</div>
+        <div class="frame-label mono">// profile photo (click to glow)</div>
       </div>
     </div>
-
     <div class="peek">
       <div class="peek-label">
         <span class="mono">personal information, achievements &amp; skills next</span>
+        <span class="cue mono">scroll or press Next ↓</span>
       </div>
     </div>
   </section>
@@ -423,8 +358,8 @@
    <div class="page-inner">
     <div class="page-head">
       <h2>Personal Information</h2>
+      <span class="mono">PROFILE &amp; ACADEMICS</span>
     </div>
-
     <div class="grid">
       <!-- Profile Details Card -->
       <div class="card c1">
@@ -434,6 +369,8 @@
         <ul class="info-list">
           <li><span class="label">FULL NAME</span> <strong>Rheigne Dela Cruz</strong></li>
           <li><span class="label">BIRTHDAY</span> <strong>July 03, 2008</strong></li>
+          <li><span class="label">HEIGHT</span> <strong>157 cm (5'2")</strong></li>
+          <li><span class="label">WEIGHT</span> <strong>54 kg</strong></li>
           <li><span class="label">DEGREE</span> <strong>BS Information Technology</strong></li>
           <li><span class="label">MAJOR</span> <strong>Web Technology</strong></li>
           <li><span class="label">UNIVERSITY</span> <strong>University of the Cordilleras</strong></li>
@@ -450,7 +387,7 @@
           <li><span class="label">STATUS</span> <strong>IT Student</strong></li>
           <li><span class="label">SPECIALIZATION</span> <strong>Web Tech</strong></li>
           <li><span class="label">YEAR LEVEL</span> <strong>1st Year</strong></li>
-          <li><span class="label">GOAL</span> <strong>To be a successful and great IT</strong></li>
+          <li><span class="label">GOAL</span> <strong>To be a successful and great IT professional</strong></li>
           <li><span class="label">INTERESTS &amp; SKILLS</span> <strong style="text-align:right; max-width:60%;">Writing, Reading, Playing Instruments, Driving, Designing, Team Collaboration</strong></li>
         </ul>
       </div>
@@ -461,25 +398,24 @@
         <h3>Key Highlights &amp; Goals</h3>
         <p>Immediate details regarding experience, parent/guardian contact, and reachable channels.</p>
         <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-top:12px;">
-          <div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:10px; border:1px solid var(--line);">
-            <div class="mono" style="font-size:0.75rem; color:var(--accent-glow); margin-bottom:4px;">DIRECT CONTACT</div>
+          <div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:10px; border:1px solid var(--gold-border);">
+            <div class="mono" style="font-size:0.75rem; color:var(--gold-glow); margin-bottom:4px;">DIRECT CONTACT</div>
             <div style="font-size:0.9rem;"><strong>Email:</strong> delacruzrheigne@gmail.com</div>
             <div style="font-size:0.9rem; margin-top:4px;"><strong>Phone:</strong> +63 962 236 8782</div>
           </div>
-          <div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:10px; border:1px solid var(--line);">
-            <div class="mono" style="font-size:0.75rem; color:var(--accent-glow); margin-bottom:4px;">ACADEMIC FOCUS</div>
+          <div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:10px; border:1px solid var(--gold-border);">
+            <div class="mono" style="font-size:0.75rem; color:var(--gold-glow); margin-bottom:4px;">ACADEMIC FOCUS</div>
             <div style="font-size:0.9rem;">Learning web development, design, and practical tech skills.</div>
           </div>
-          <div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:10px; border:1px solid var(--line);">
-            <div class="mono" style="font-size:0.75rem; color:var(--accent-glow); margin-bottom:4px;">PARENT / GUARDIAN</div>
+          <div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:10px; border:1px solid var(--gold-border);">
+            <div class="mono" style="font-size:0.75rem; color:var(--gold-glow); margin-bottom:4px;">PARENT / GUARDIAN</div>
             <div style="font-size:0.9rem;"><strong>Contact Person:</strong> Mr. Sherwin Dela Cruz &amp; Mrs. Dale Dela Cruz</div>
             <div style="font-size:0.9rem; margin-top:4px;"><strong>Residence:</strong> Magaspac, Gerona, Tarlac</div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Inspirational quote about dedication -->
+    
     <div class="quote-box">
       <p class="quote-text">“Dedication turns small, steady effort into extraordinary results.”</p>
       <div class="quote-tag mono">// on dedication</div>
@@ -487,29 +423,160 @@
    </div>
   </section>
 
-  <!-- PAGE 3: ACHIEVEMENT SECTION -->
+  <!-- PAGE 3: ACHIEVEMENTS SECTION (Single layout page with 4 structured blocks) -->
   <section id="achievement">
    <div class="page-inner">
     <div class="page-head">
-      <h2>Achievement</h2>
-      <span class="mono">RECOGNITIONS &amp; EXPERIENCE</span>
+      <h2>Achievements</h2>
+      <span class="mono">RECOGNITIONS, MILESTONES &amp; PROJECTS</span>
     </div>
-    <div class="grid">
-      <div class="card c1">
-        <span class="num mono">01 // HONORS</span>
+
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      
+      <!-- 01: Academic Honors (2 Picture Slots) -->
+      <div class="card" style="min-height: auto;">
+        <span class="num mono">01 // HONORS & AWARDS</span>
         <h3>Academic Honors</h3>
-        <p>Recognized for consistent academic performance, dedication to learning, and excellence in IT coursework.</p>
+        <p style="margin-bottom: 12px;">Consistently recognized for exemplary academic performance, dedication to learning, and excellence in coursework.</p>
+        
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--line); border-radius: 10px; padding: 12px; margin-bottom: 14px;">
+          <p style="margin:0; font-size: 0.88rem; color: var(--muted); font-style: italic;">
+            Write your academic honors description, GPA highlights, or semester awards here...
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="photo-box">
+            <div class="photo-placeholder-text">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span>Medals Picture</span>
+            </div>
+          </div>
+          <div class="photo-box">
+            <div class="photo-placeholder-text">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span>Certificates Picture</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card c2">
-        <span class="num mono">02 // COMPETITIONS</span>
-        <h3>Competition &amp; Awards</h3>
-        <p>Active participant and achiever in academic competitions, tech challenges, and school events.</p>
+
+      <!-- 02: Secondary Educational Completion (2 Picture Slots) -->
+      <div class="card" style="min-height: auto;">
+        <span class="num mono">02 // ACADEMIC MILESTONES</span>
+        <h3>Secondary Educational Completion &amp; Graduation</h3>
+        <p style="margin-bottom: 12px;">Successful completion of secondary education milestones with honors and active participation in school programs.</p>
+        
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--line); border-radius: 10px; padding: 12px; margin-bottom: 14px;">
+          <p style="margin:0; font-size: 0.88rem; color: var(--muted); font-style: italic;">
+            Write details regarding your Grade 10 Completion and Grade 12 Senior High School Graduation here...
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="photo-box">
+            <div class="photo-placeholder-text">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span>10th Grade Graduation</span>
+            </div>
+          </div>
+          <div class="photo-box">
+            <div class="photo-placeholder-text">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span>12th Grade Graduation</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card c3">
-        <span class="num mono">03 // PRACTICAL EXPERIENCE</span>
-        <h3>Work Immersion</h3>
-        <p>Hands-on training and exposure in real-world IT environments, developing essential industry skills and teamwork.</p>
+
+      <!-- 03: Projects & Leadership (2 Options with Description + Photo) -->
+      <div class="card" style="min-height: auto;">
+        <span class="num mono">03 // LEADERSHIP & PROJECTS</span>
+        <h3>Major Projects &amp; Leadership Roles</h3>
+        <p style="margin-bottom: 14px;">Key academic projects, team leadership roles, and major school exhibition endeavors.</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <!-- Option A: Art/Saint Exhibition Booth -->
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px;">
+            <strong style="color: var(--gold-glow); font-size: 0.95rem;">Art / Saint Exhibition Booth Lead</strong>
+            <p style="margin: 0; font-size: 0.82rem; color: var(--muted); line-height: 1.5; font-style: italic;">
+              Led the design and execution of a major booth for the school art/saint exhibition...
+            </p>
+            <div class="photo-box" style="min-height: 110px;">
+              <div class="photo-placeholder-text">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span>Exhibition Booth Photo</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Option B: Capstone Project -->
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px;">
+            <strong style="color: var(--gold-glow); font-size: 0.95rem;">Top-Tier Capstone Project</strong>
+            <p style="margin: 0; font-size: 0.82rem; color: var(--muted); line-height: 1.5; font-style: italic;">
+              Developed one of the school's top capstone projects, featuring innovative web tech solutions...
+            </p>
+            <div class="photo-box" style="min-height: 110px;">
+              <div class="photo-placeholder-text">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span>Capstone Project Photo</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <!-- 04: Competitions & Awards (3 Pictures + Descriptions) -->
+      <div class="card" style="min-height: auto;">
+        <span class="num mono">04 // COMPETITIONS & AWARDS</span>
+        <h3>Competitions &amp; Special Recognitions</h3>
+        <p style="margin-bottom: 14px;">Distinctions earned across technical work immersion, musical performance, and essay writing competitions.</p>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;">
+          <!-- Item 1: Best in Work Immersion -->
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+            <strong style="color: var(--gold-glow); font-size: 0.88rem;">Best in Work Immersion</strong>
+            <p style="margin: 0; font-size: 0.78rem; color: var(--muted); line-height: 1.4; font-style: italic;">
+              Awarded for outstanding performance during IT work immersion.
+            </p>
+            <div class="photo-box" style="min-height: 100px;">
+              <div class="photo-placeholder-text">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span>Work Immersion</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2: 1st Place Battle of the Bands -->
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+            <strong style="color: var(--gold-glow); font-size: 0.88rem;">1st Place — Battle of the Bands</strong>
+            <p style="margin: 0; font-size: 0.78rem; color: var(--muted); line-height: 1.4; font-style: italic;">
+              Champion title in musical band competition.
+            </p>
+            <div class="photo-box" style="min-height: 100px;">
+              <div class="photo-placeholder-text">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span>Battle of the Bands</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3: 1st Place Essay Writing -->
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+            <strong style="color: var(--gold-glow); font-size: 0.88rem;">1st Place — Essay Writing</strong>
+            <p style="margin: 0; font-size: 0.78rem; color: var(--muted); line-height: 1.4; font-style: italic;">
+              1st place award in academic essay competition.
+            </p>
+            <div class="photo-box" style="min-height: 100px;">
+              <div class="photo-placeholder-text">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span>Essay Writing</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
    </div>
   </section>
@@ -521,10 +588,9 @@
       <h2>Parent</h2>
       <span class="mono">FAMILY &amp; GUARDIANS</span>
     </div>
-
     <div class="parent-container">
       
-      <!-- LEFT SIDE: Separate Mother & Father Cards with Photo Slots & Custom Text Areas -->
+      <!-- LEFT SIDE: Separate Mother & Father Cards -->
       <div class="parents-left-col">
         <!-- Father Card -->
         <div class="card" style="padding: 22px;">
@@ -532,16 +598,13 @@
           <h3 style="margin-bottom: 12px;">Mr. Sherwin Dela Cruz</h3>
           
           <div style="display: grid; grid-template-columns: 140px 1fr; gap: 16px; align-items: stretch; margin-top: 8px;">
-            <!-- Photo Slot for Dad -->
             <div class="photo-box">
               <div class="photo-placeholder-text">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                 <span>Photo with Dad</span>
               </div>
             </div>
-
-            <!-- Custom Text / Appreciation Space for Dad -->
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; justify-content: center;">
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--gold-border); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; justify-content: center;">
               <p style="margin: 0; font-size: 0.88rem; color: var(--muted); line-height: 1.6; font-style: italic;">
                 Write your information, notes, and message of appreciation for your father here...
               </p>
@@ -555,16 +618,13 @@
           <h3 style="margin-bottom: 12px;">Mrs. Dale Dela Cruz</h3>
           
           <div style="display: grid; grid-template-columns: 140px 1fr; gap: 16px; align-items: stretch; margin-top: 8px;">
-            <!-- Photo Slot for Mom -->
             <div class="photo-box">
               <div class="photo-placeholder-text">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                 <span>Photo with Mom</span>
               </div>
             </div>
-
-            <!-- Custom Text / Appreciation Space for Mom -->
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; justify-content: center;">
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--gold-border); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; justify-content: center;">
               <p style="margin: 0; font-size: 0.88rem; color: var(--muted); line-height: 1.6; font-style: italic;">
                 Write your information, notes, and message of appreciation for your mother here...
               </p>
@@ -580,7 +640,6 @@
           <h3>Family Picture</h3>
           <p>Memories and moments together with my parents.</p>
           
-          <!-- Photo Slot for Family Picture -->
           <div class="photo-box family-photo-box" style="margin-top: 12px;">
             <div class="photo-placeholder-text">
               <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
@@ -590,7 +649,6 @@
           </div>
         </div>
       </div>
-
     </div>
    </div>
   </section>
@@ -598,7 +656,7 @@
   <!-- PAGE 5: SKILLS SECTION -->
   <section id="skills">
    <div class="page-inner">
-    <div class="page-head"><h2>Skills</h2></div>
+    <div class="page-head"><h2>Skills</h2><span class="mono">TECHNICAL &amp; DESIGN CAPABILITIES</span></div>
     <div class="grid">
       <div class="card c1">
         <span class="num mono">01 // FRONTEND DEVELOPMENT</span>
@@ -623,12 +681,12 @@
         <h3>Software &amp; Version Control</h3>
         <p>Proficient with essential web technology tooling, source code control, and collaborative interface design tools.</p>
         <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-top:12px;">
-          <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; border:1px solid var(--line);">
-            <strong style="color:var(--accent-glow);">Git &amp; GitHub</strong>
+          <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; border:1px solid var(--gold-border);">
+            <strong style="color:var(--gold-glow);">Git &amp; GitHub</strong>
             <p style="font-size:0.82rem; margin:4px 0 0; color:var(--muted);">Repository management, branching &amp; deployment.</p>
           </div>
-          <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; border:1px solid var(--line);">
-            <strong style="color:var(--accent-glow);">Figma &amp; UI Design</strong>
+          <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; border:1px solid var(--gold-border);">
+            <strong style="color:var(--gold-glow);">Figma &amp; UI Design</strong>
             <p style="font-size:0.82rem; margin:4px 0 0; color:var(--muted);">Prototyping, layout design &amp; typography scaling.</p>
           </div>
         </div>
@@ -640,7 +698,7 @@
   <!-- PAGE 6: CONTACT SECTION -->
   <section id="contact">
    <div class="page-inner">
-    <div class="page-head"><h2>Contact</h2></div>
+    <div class="page-head"><h2>Contact</h2><span class="mono">GET IN TOUCH</span></div>
     <div class="contact-grid">
       <a href="tel:+639622368782" class="contact-card">
         <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
@@ -660,16 +718,15 @@
     </div>
    </div>
   </section>
-
 </div>
 
-<!-- NEXT / GO BACK BOXES (bottom right of every page) -->
+<!-- PAGER BUTTONS -->
 <div class="pager" aria-label="Page navigation">
   <button type="button" id="prevBtn" class="pager-btn">Go back</button>
   <button type="button" id="nextBtn" class="pager-btn pager-next">Next</button>
 </div>
 
-<!-- Page switching: shows one page at a time and fits it to the screen so nothing scrolls -->
+<!-- PAGE NAVIGATION & PROFILE CLICK GLOW SCRIPT -->
 <script>
   (function () {
     const ids = ['hero', 'work', 'achievement', 'parent', 'skills', 'contact'];
@@ -679,14 +736,21 @@
     const nextBtn = document.getElementById('nextBtn');
     let current = 0;
 
-    // Shrinks a page a little if it is taller than the screen, so it never needs scrolling.
+    // Click profile image to toggle extra gold glow
+    const heroVisual = document.getElementById('heroVisual');
+    const profileWrap = document.getElementById('profileWrap');
+    if (heroVisual && profileWrap) {
+      heroVisual.addEventListener('click', () => {
+        profileWrap.classList.toggle('gold-active');
+      });
+    }
+
     function fit(section) {
       const inner = section.querySelector('.page-inner');
       if (!inner) return;
       inner.style.transform = '';
       inner.style.width = '';
-      if (window.innerWidth <= 820) return;            // phones scroll inside the page instead
-
+      if (window.innerWidth <= 820) return;
       const cs = getComputedStyle(section);
       const avail = section.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
       let scale = 1;
@@ -698,7 +762,7 @@
         if (Math.abs(next - scale) < 0.004) { scale = next; break; }
         scale = next;
       }
-      while (scale > 0.5) {                            // final safety check
+      while (scale > 0.5) {
         inner.style.width = (100 / scale) + '%';
         if (inner.scrollHeight * scale <= avail + 1) break;
         scale -= 0.02;
@@ -717,7 +781,6 @@
       if (updateHash !== false) history.replaceState(null, '', '#' + ids[current]);
     }
 
-    // Every link that points to a page (top menu, logo, hero button) switches pages
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
         const i = ids.indexOf(a.getAttribute('href').slice(1));
@@ -729,12 +792,10 @@
 
     prevBtn.addEventListener('click', () => show(current - 1));
     nextBtn.addEventListener('click', () => show(current + 1));
-
     document.addEventListener('keydown', e => {
       if (e.key === 'ArrowRight' || e.key === 'PageDown') show(current + 1);
       if (e.key === 'ArrowLeft' || e.key === 'PageUp') show(current - 1);
     });
-
     window.addEventListener('resize', () => fit(sections[current]));
     window.addEventListener('hashchange', () => {
       const i = ids.indexOf(location.hash.slice(1));
@@ -742,46 +803,42 @@
     });
     window.addEventListener('load', () => fit(sections[current]));
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fit(sections[current]));
-
     const start = ids.indexOf(location.hash.slice(1));
     show(start === -1 ? 0 : start, false);
   })();
 </script>
 
-<!-- 3D WebGL Background Engine -->
+<!-- 3D WebGL Background Engine: Dark Blue Wireframe Mesh + Cyan & Gold Sparkle Particles -->
 <script>
   window.addEventListener('load', function () {
     const canvas = document.getElementById('webgl-bg');
     if (!canvas) return;
-
     const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     const scene = new THREE.Scene();
-
     const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 35;
 
     const ambientLight = new THREE.AmbientLight(0x0a1128, 3.0);
     scene.add(ambientLight);
-
     const light1 = new THREE.PointLight(0x4c8dff, 3.5, 120);
     light1.position.set(25, 25, 25);
     scene.add(light1);
-
-    const light2 = new THREE.PointLight(0x8fd3ff, 2.5, 120);
+    const light2 = new THREE.PointLight(0xffd700, 2.5, 120);
     light2.position.set(-25, -25, -10);
     scene.add(light2);
 
     const mainGroup = new THREE.Group();
     scene.add(mainGroup);
 
+    // Dark Blue Wireframe Mesh
     const meshGeo = new THREE.IcosahedronGeometry(12, 2);
     const meshMat = new THREE.MeshPhongMaterial({
       color: 0x10183a,
       emissive: 0x0a1128,
-      specular: 0x8fd3ff,
+      specular: 0xffd700,
       wireframe: true,
       transparent: true,
       opacity: 0.25
@@ -789,31 +846,46 @@
     const mainMesh = new THREE.Mesh(meshGeo, meshMat);
     mainGroup.add(mainMesh);
 
-    const particlesCount = 120;
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particlesCount * 3);
-
-    for (let i = 0; i < particlesCount * 3; i += 3) {
-      positions[i] = (Math.random() - 0.5) * 90;
-      positions[i + 1] = (Math.random() - 0.5) * 90;
-      positions[i + 2] = (Math.random() - 0.5) * 60;
+    // 1. Cyan Floating Particles
+    const cyanCount = 100;
+    const cyanGeo = new THREE.BufferGeometry();
+    const cyanPos = new Float32Array(cyanCount * 3);
+    for (let i = 0; i < cyanCount * 3; i += 3) {
+      cyanPos[i] = (Math.random() - 0.5) * 90;
+      cyanPos[i + 1] = (Math.random() - 0.5) * 90;
+      cyanPos[i + 2] = (Math.random() - 0.5) * 60;
     }
-
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-    const pMaterial = new THREE.PointsMaterial({
+    cyanGeo.setAttribute('position', new THREE.BufferAttribute(cyanPos, 3));
+    const cyanMat = new THREE.PointsMaterial({
       color: 0x8fd3ff,
       size: 0.6,
       transparent: true,
       opacity: 0.7
     });
+    const cyanParticles = new THREE.Points(cyanGeo, cyanMat);
+    mainGroup.add(cyanParticles);
 
-    const particles = new THREE.Points(geometry, pMaterial);
-    mainGroup.add(particles);
+    // 2. Gold Sparkle Particles
+    const goldCount = 60;
+    const goldGeo = new THREE.BufferGeometry();
+    const goldPos = new Float32Array(goldCount * 3);
+    for (let i = 0; i < goldCount * 3; i += 3) {
+      goldPos[i] = (Math.random() - 0.5) * 80;
+      goldPos[i + 1] = (Math.random() - 0.5) * 80;
+      goldPos[i + 2] = (Math.random() - 0.5) * 50;
+    }
+    goldGeo.setAttribute('position', new THREE.BufferAttribute(goldPos, 3));
+    const goldMat = new THREE.PointsMaterial({
+      color: 0xffd700,
+      size: 0.75,
+      transparent: true,
+      opacity: 0.85
+    });
+    const goldParticles = new THREE.Points(goldGeo, goldMat);
+    mainGroup.add(goldParticles);
 
     let mouseX = 0, mouseY = 0;
     let targetX = 0, targetY = 0;
-
     window.addEventListener('mousemove', (e) => {
       mouseX = (e.clientX - window.innerWidth / 2) * 0.0008;
       mouseY = (e.clientY - window.innerHeight / 2) * 0.0008;
@@ -827,20 +899,19 @@
 
     function animate() {
       requestAnimationFrame(animate);
-
       targetX += (mouseX - targetX) * 0.05;
       targetY += (mouseY - targetY) * 0.05;
 
       mainMesh.rotation.x += 0.002;
       mainMesh.rotation.y += 0.003;
-      particles.rotation.y -= 0.001;
+      cyanParticles.rotation.y -= 0.001;
+      goldParticles.rotation.y += 0.0015;
 
       mainGroup.rotation.y = targetX * 1.2;
       mainGroup.rotation.x = -targetY * 1.2;
 
       renderer.render(scene, camera);
     }
-
     animate();
   });
 </script>
