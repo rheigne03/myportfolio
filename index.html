@@ -284,12 +284,15 @@
     .contact-grid{ grid-template-columns:1fr; }
   }
 
-  /* ---------- ACHIEVEMENTS: photos fill the page, stopping just above Go back / Next ---------- */
+  /* ---------- ACHIEVEMENTS: big photos that fill the page, stopping just above Go back / Next ---------- */
+  /* hide the little label + icon once the real photo has loaded, so the picture is clear */
+  .photo-box img:not([style*="none"]) + .photo-placeholder-text{ display:none; }
   @media (min-width: 821px){
-    #achievement{ padding-bottom:84px; }
+    #achievement{ padding-top:80px; padding-bottom:78px; }
     #achievement .page-inner{ flex:1; min-height:0; display:flex; flex-direction:column; }
-    #achievement .ach-grid{ flex:1; min-height:0; grid-template-rows:1fr 1fr; }
-    #achievement .ach-grid .card{ min-height:0; }
+    #achievement .page-head{ margin-bottom:8px !important; }
+    #achievement .ach-grid{ flex:1; min-height:0; grid-template-columns:1fr 1.25fr !important; grid-template-rows:1fr 1fr; gap:12px !important; }
+    #achievement .ach-grid .card{ min-height:0; padding:12px 14px !important; }
     #achievement .ach-photos{ flex:1; min-height:0; grid-template-rows:1fr; }
   }
 </style>
@@ -498,7 +501,7 @@
       <div class="card" style="padding: 14px 18px;">
         <span class="num mono" style="margin-bottom: 4px;">04 // COMPETITIONS & AWARDS</span>
         <h3 style="font-size: 1rem; margin-bottom: 4px;">Band &amp; Academic Contests</h3>
-        <p style="font-size: 0.78rem; margin-bottom: 8px; line-height: 1.4;">1st Place Battle of the Bands (defeating 10 bands), Best in Work Immersion, &amp; Essay Writing.</p>
+        <p style="font-size: 0.78rem; margin-bottom: 8px; line-height: 1.4;">1st Place Battle of the Bands (defeating 10 bands) &amp; Best in Work Immersion.</p>
         <div class="ach-photos" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
           <div class="photo-box" style="min-height: 70px;">
             <img src="images/band-group.jpg" alt="Battle of the Bands Group" onerror="this.style.display='none'">
