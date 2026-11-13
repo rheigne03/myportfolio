@@ -283,6 +283,15 @@
     .parent-container { grid-template-columns: 1fr; }
     .contact-grid{ grid-template-columns:1fr; }
   }
+
+  /* ---------- ACHIEVEMENTS: photos fill the page, stopping just above Go back / Next ---------- */
+  @media (min-width: 821px){
+    #achievement{ padding-bottom:84px; }
+    #achievement .page-inner{ flex:1; min-height:0; display:flex; flex-direction:column; }
+    #achievement .ach-grid{ flex:1; min-height:0; grid-template-rows:1fr 1fr; }
+    #achievement .ach-grid .card{ min-height:0; }
+    #achievement .ach-photos{ flex:1; min-height:0; grid-template-rows:1fr; }
+  }
 </style>
 </head>
 <body>
@@ -407,22 +416,22 @@
       <span class="mono">RECOGNITIONS, MILESTONES &amp; PROJECTS</span>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+    <div class="ach-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
       
       <!-- 01: Academic Honors (2 Photos) -->
       <div class="card" style="padding: 14px 18px;">
         <span class="num mono" style="margin-bottom: 4px;">01 // ACADEMIC HONORS</span>
         <h3 style="font-size: 1rem; margin-bottom: 4px;">Academic Honors &amp; Awards</h3>
         <p style="font-size: 0.78rem; margin-bottom: 8px; line-height: 1.4;">Consistently recognized for academic excellence, honor rolls, and dedicated coursework.</p>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-          <div class="photo-box" style="min-height: 75px;">
+        <div class="ach-photos" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div class="photo-box" style="min-height: 70px;">
             <img src="images/medals-spread.jpg" alt="Medals & Certificates" onerror="this.style.display='none'">
             <div class="photo-placeholder-text">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
               <span style="font-size:0.7rem;">Medals &amp; Certs</span>
             </div>
           </div>
-          <div class="photo-box" style="min-height: 75px;">
+          <div class="photo-box" style="min-height: 70px;">
             <img src="images/medals-closeup.jpg" alt="Medals Closeup" onerror="this.style.display='none'">
             <div class="photo-placeholder-text">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
@@ -437,22 +446,22 @@
         <span class="num mono" style="margin-bottom: 4px;">02 // EDUCATIONAL MILESTONES</span>
         <h3 style="font-size: 1rem; margin-bottom: 4px;">Graduation Milestones</h3>
         <p style="font-size: 0.78rem; margin-bottom: 8px; line-height: 1.4;">Celebrating key educational milestones from Grade 6 to Senior High School graduation.</p>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
-          <div class="photo-box" style="min-height: 75px;">
+        <div class="ach-photos" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
+          <div class="photo-box" style="min-height: 70px;">
             <img src="images/grade-6.jpg" alt="6th Grade Graduation" onerror="this.style.display='none'">
             <div class="photo-placeholder-text">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
               <span style="font-size:0.65rem;">6th Grade</span>
             </div>
           </div>
-          <div class="photo-box" style="min-height: 75px;">
+          <div class="photo-box" style="min-height: 70px;">
             <img src="images/grade-10.jpg" alt="10th Grade Graduation with Dad" onerror="this.style.display='none'">
             <div class="photo-placeholder-text">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
               <span style="font-size:0.65rem;">10th Grade</span>
             </div>
           </div>
-          <div class="photo-box" style="min-height: 75px;">
+          <div class="photo-box" style="min-height: 70px;">
             <img src="images/grade-12.jpg" alt="12th Grade Graduation with Parents" onerror="this.style.display='none'">
             <div class="photo-placeholder-text">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
@@ -467,15 +476,15 @@
         <span class="num mono" style="margin-bottom: 4px;">03 // PROJECTS & LEADERSHIP</span>
         <h3 style="font-size: 1rem; margin-bottom: 4px;">Capstone &amp; Museum Exhibits</h3>
         <p style="font-size: 0.78rem; margin-bottom: 8px; line-height: 1.4;">Top 3 Arduino capstone project &amp; St. Peter Sanz big book displayed in the school museum.</p>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-          <div class="photo-box" style="min-height: 75px;">
+        <div class="ach-photos" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div class="photo-box" style="min-height: 70px;">
             <img src="images/arduino-capstone.jpg" alt="Arduino Capstone Project" onerror="this.style.display='none'">
             <div class="photo-placeholder-text">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
               <span style="font-size:0.7rem;">Arduino Capstone</span>
             </div>
           </div>
-          <div class="photo-box" style="min-height: 75px;">
+          <div class="photo-box" style="min-height: 70px;">
             <img src="images/saint-big-book.jpg" alt="St. Peter Sanz Big Book" onerror="this.style.display='none'">
             <div class="photo-placeholder-text">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
@@ -490,22 +499,22 @@
         <span class="num mono" style="margin-bottom: 4px;">04 // COMPETITIONS & AWARDS</span>
         <h3 style="font-size: 1rem; margin-bottom: 4px;">Band &amp; Academic Contests</h3>
         <p style="font-size: 0.78rem; margin-bottom: 8px; line-height: 1.4;">1st Place Battle of the Bands (defeating 10 bands), Best in Work Immersion, &amp; Essay Writing.</p>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
-          <div class="photo-box" style="min-height: 75px;">
+        <div class="ach-photos" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
+          <div class="photo-box" style="min-height: 70px;">
             <img src="images/band-group.jpg" alt="Battle of the Bands Group" onerror="this.style.display='none'">
             <div class="photo-placeholder-text">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
               <span style="font-size:0.65rem;">Battle of Bands</span>
             </div>
           </div>
-          <div class="photo-box" style="min-height: 75px;">
+          <div class="photo-box" style="min-height: 70px;">
             <img src="images/band-trophy.jpg" alt="Trophy & Certificate" onerror="this.style.display='none'">
             <div class="photo-placeholder-text">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
               <span style="font-size:0.65rem;">Trophy &amp; Cert</span>
             </div>
           </div>
-          <div class="photo-box" style="min-height: 75px;">
+          <div class="photo-box" style="min-height: 70px;">
             <img src="images/work-immersion.jpg" alt="Best in Work Immersion" onerror="this.style.display='none'">
             <div class="photo-placeholder-text">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
