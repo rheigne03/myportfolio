@@ -181,46 +181,132 @@
   .c2{ grid-column:span 3; }
   .c3{ grid-column:span 6; }
 
-  /* ---------- EDUCATIONAL BACKGROUND TIMELINE ON PAGE 2 ---------- */
-  .edu-timeline {
-    margin-top: 12px;
-    padding-top: 10px;
+  /* ---------- SEPARATE INTERESTS BADGES ON PAGE 2 ---------- */
+  .interests-section {
+    margin-top: 14px;
+    padding-top: 12px;
     border-top: 1px dashed var(--gold-border);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
-  .edu-title {
+  .interests-title {
     font-size: 0.72rem;
     color: var(--gold-glow);
-    margin-bottom: 8px;
     display: block;
     font-weight: 500;
+  }
+  .interest-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+  .interest-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: rgba(10, 17, 40, 0.72);
+    border: 1px solid var(--gold-border);
+    color: var(--text);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    transition: all 0.22s ease;
+  }
+  .interest-tag:hover {
+    border-color: var(--gold-glow);
+    color: var(--gold-glow);
+    background: rgba(255, 215, 0, 0.14);
+    transform: translateY(-2px);
+    box-shadow: 0 0 16px rgba(255, 215, 0, 0.35);
+  }
+
+  /* ---------- PAGE 3: SPLIT LAYOUT & EDUCATIONAL BACKGROUND RIGHT PANEL ---------- */
+  .ach-edu-layout {
+    display: grid;
+    grid-template-columns: 2.35fr 1fr;
+    gap: 16px;
+    flex: 1;
+    min-height: 0;
+  }
+  .edu-side-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px 18px !important;
   }
   .edu-list {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 8px 0 0;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    justify-content: space-between;
+    flex: 1;
+    gap: 8px;
   }
   .edu-item {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 12px;
     background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 215, 0, 0.18);
-    border-radius: 7px;
-    padding: 5px 10px;
-    font-size: 0.8rem;
+    border: 1px solid rgba(255, 215, 0, 0.22);
+    border-radius: 12px;
+    padding: 8px 12px;
+    transition: all 0.2s ease;
+  }
+  .edu-item:hover {
+    border-color: var(--gold-glow);
+    background: rgba(255, 215, 0, 0.08);
+    transform: translateY(-1px);
+  }
+  .school-logo-circle {
+    width: 54px;
+    height: 54px;
+    min-width: 54px;
+    min-height: 54px;
+    border-radius: 50% !important;
+    border: 2px dashed var(--gold-border);
+    background: rgba(10, 17, 40, 0.8);
+    padding: 4px;
+    flex-shrink: 0;
+    box-shadow: 0 0 14px rgba(255, 215, 0, 0.16);
+    transition: all 0.25s ease;
+  }
+  .edu-item:hover .school-logo-circle {
+    border-color: var(--gold-glow);
+    box-shadow: 0 0 18px rgba(255, 215, 0, 0.45);
+  }
+  .school-logo-circle img {
+    border-radius: 50% !important;
+    object-fit: cover;
+  }
+  .school-logo-circle .photo-placeholder-text {
+    gap: 2px;
+  }
+  .school-logo-circle .photo-placeholder-text span {
+    font-size: 0.56rem;
+    line-height: 1.05;
+  }
+  .edu-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
   }
   .edu-item .level {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     color: var(--gold-glow);
+    letter-spacing: 0.03em;
   }
   .edu-item .school {
     font-weight: 600;
+    font-size: 0.84rem;
     color: var(--text);
-    text-align: right;
+    line-height: 1.25;
   }
 
   /* ---------- PHOTO BOX & PLACEHOLDERS ---------- */
@@ -275,12 +361,82 @@
   }
   .quote-box .quote-tag{ color:var(--muted); font-size:0.7rem; margin-top:4px; }
 
-  /* ---------- PARENT CONTAINER ---------- */
-  .parent-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
-  .parents-left-col { display: flex; flex-direction: column; gap: 16px; }
-  .parents-right-col { display: flex; flex-direction: column; }
-  .family-photo-card { height: 100%; display: flex; flex-direction: column; }
-  .family-photo-box { flex: 1; min-height: 240px; }
+  /* ---------- FAMILY & FRIENDS CONTAINER (PAGE 4) ---------- */
+  .family-friends-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 18px;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+  }
+  .family-left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 0;
+  }
+  .parents-pair-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .parent-mini-card {
+    padding: 14px 16px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .parent-mini-card .photo-box {
+    min-height: 115px;
+    height: 120px;
+  }
+  .note-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--gold-border);
+    border-radius: 9px;
+    padding: 9px 12px;
+    display: flex;
+    align-items: center;
+  }
+  .note-box p {
+    margin: 0 !important;
+    font-size: 0.78rem !important;
+    color: var(--muted);
+    line-height: 1.45 !important;
+    font-style: italic;
+  }
+  .family-bottom-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 14px 18px !important;
+    min-height: 0;
+  }
+  .family-photo-box {
+    flex: 1;
+    min-height: 135px;
+    margin-top: 6px;
+  }
+  .friends-right-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px 20px !important;
+    gap: 10px;
+  }
+  .friends-photos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    flex: 1;
+    min-height: 175px;
+  }
+  .friends-photos-grid .photo-box {
+    height: 100%;
+    min-height: 160px;
+  }
 
   /* ---------- CONTACT CARDS ---------- */
   #contact{ padding-bottom:40px; }
@@ -319,33 +475,51 @@
   .pager-btn:disabled{ opacity:0.3; cursor:not-allowed; }
 
   @media (max-width: 820px){
+    section { overflow-y: auto; }
     nav .links{ gap:14px; font-size:0.8rem; }
     .grid{ grid-template-columns:1fr; }
     .c1,.c2,.c3{ grid-column:span 1; }
-    .parent-container { grid-template-columns: 1fr; }
+    .ach-edu-layout { grid-template-columns: 1fr; }
+    .ach-grid { grid-template-columns: 1fr !important; }
+    .family-friends-grid { grid-template-columns: 1fr; }
+    .parents-pair-row { grid-template-columns: 1fr; }
+    .friends-photos-grid { grid-template-columns: 1fr; }
     .contact-grid{ grid-template-columns:1fr; }
     .ach-span-2 { grid-column: span 1 !important; }
     .ach-photos-4 { grid-template-columns: repeat(2, 1fr) !important; }
   }
 
-  /* ---------- ACHIEVEMENTS: Option 1 (5-Card Grid filling the screen cleanly) ---------- */
+  /* ---------- ACHIEVEMENTS & EDUCATIONAL BACKGROUND DESKTOP FIT ---------- */
   .photo-box img:not([style*="none"]) + .photo-placeholder-text{ display:none; }
   @media (min-width: 821px){
     #achievement{ padding-top:78px; padding-bottom:76px; }
     #achievement .page-inner{ flex:1; min-height:0; display:flex; flex-direction:column; }
-    #achievement .page-head{ margin-bottom:8px !important; }
+    #achievement .page-head{ margin-bottom:10px !important; }
     #achievement .ach-grid{
       flex:1; min-height:0;
       grid-template-columns:1fr 1.25fr !important;
       grid-template-rows:repeat(3, minmax(0, 1fr));
-      gap:10px !important;
+      gap:12px !important;
     }
-    #achievement .ach-grid .card{ min-height:0; padding:10px 14px !important; }
-    #achievement .ach-grid .card h3{ font-size:0.95rem !important; margin-bottom:2px !important; }
-    #achievement .ach-grid .card p{ font-size:0.74rem !important; margin-bottom:6px !important; line-height:1.35 !important; }
+    #achievement .ach-grid .card{ min-height:0; padding:12px 16px !important; }
+    #achievement .ach-grid .card h3{ font-size:0.98rem !important; margin-bottom:3px !important; }
+    #achievement .ach-grid .card p{ font-size:0.76rem !important; margin-bottom:7px !important; line-height:1.38 !important; }
     #achievement .ach-grid .card .num{ font-size:0.7rem !important; margin-bottom:2px !important; }
+    #achievement .ach-photos{ flex:1; min-height:68px; grid-template-rows:1fr; }
+    #achievement .ach-span-2{ grid-column:span 2; }
+    #achievement .edu-side-card{ min-height:0; padding:14px 16px !important; }
+    #achievement .edu-side-card .num{ font-size:0.7rem !important; margin-bottom:2px !important; }
+    #achievement .edu-side-card h3{ font-size:1.02rem !important; margin-bottom:3px !important; }
+  }
+    #achievement .ach-grid .card{ min-height:0; padding:10px 14px !important; }
+    #achievement .ach-grid .card h3{ font-size:0.92rem !important; margin-bottom:2px !important; }
+    #achievement .ach-grid .card p{ font-size:0.72rem !important; margin-bottom:6px !important; line-height:1.35 !important; }
+    #achievement .ach-grid .card .num{ font-size:0.68rem !important; margin-bottom:2px !important; }
     #achievement .ach-photos{ flex:1; min-height:0; grid-template-rows:1fr; }
     #achievement .ach-span-2{ grid-column:span 2; }
+    #achievement .edu-side-card{ min-height:0; padding:12px 16px !important; }
+    #achievement .edu-side-card .num{ font-size:0.68rem !important; margin-bottom:2px !important; }
+    #achievement .edu-side-card h3{ font-size:0.98rem !important; margin-bottom:2px !important; }
   }
 
   /* ---------- CLICK-TO-ENLARGE PHOTOS ---------- */
@@ -400,7 +574,7 @@
     <a href="#hero">Home</a>
     <a href="#work">Personal Information</a>
     <a href="#achievement">Achievements</a>
-    <a href="#parent">Parent</a>
+    <a href="#parent">Family &amp; Friends</a>
     <a href="#contact" class="cta">Contact</a>
   </div>
 </nav>
@@ -434,12 +608,12 @@
     </div>
   </section>
 
-  <!-- PAGE 2: PERSONAL INFORMATION SECTION (WITH EDUCATIONAL BACKGROUND ON THE RIGHT) -->
+  <!-- PAGE 2: PERSONAL INFORMATION SECTION (WITH SEPARATE INTERESTS BADGES) -->
   <section id="work">
    <div class="page-inner">
     <div class="page-head">
       <h2>Personal Information</h2>
-      <span class="mono">PROFILE &amp; ACADEMICS</span>
+      <span class="mono">PROFILE &amp; INTERESTS</span>
     </div>
     <div class="grid">
       <!-- Left Card: Profile Details -->
@@ -459,37 +633,28 @@
         </ul>
       </div>
 
-      <!-- Right Card: Education, Focus & Schools Attended -->
+      <!-- Right Card: Focus & Individual Interests -->
       <div class="card c2">
-        <span class="num mono">02 // ACADEMICS &amp; EDUCATION</span>
-        <h3>Education &amp; Focus</h3>
+        <span class="num mono">02 // FOCUS &amp; INTERESTS</span>
+        <h3>Academic Focus &amp; Interests</h3>
+        <p>Current field of specialization, career aspiration, and personal passions.</p>
         <ul class="info-list">
           <li><span class="label">SPECIALIZATION</span> <strong>Web Tech (1st Year IT)</strong></li>
           <li><span class="label">GOAL</span> <strong style="text-align:right;">Successful &amp; great IT professional</strong></li>
-          <li><span class="label">INTERESTS</span> <strong style="text-align:right; max-width:65%;">Writing, Reading, Instruments, Driving, Designing</strong></li>
         </ul>
 
-        <!-- Schools Attended Timeline -->
-        <div class="edu-timeline">
-          <span class="edu-title mono">// EDUCATIONAL BACKGROUND</span>
-          <ul class="edu-list">
-            <li class="edu-item">
-              <span class="level">COLLEGE (PRESENT)</span>
-              <span class="school">University of the Cordilleras</span>
-            </li>
-            <li class="edu-item">
-              <span class="level">GRADE 11 – 12</span>
-              <span class="school">St. Rose Catholic School</span>
-            </li>
-            <li class="edu-item">
-              <span class="level">GRADE 1 – 10</span>
-              <span class="school">Gerona Catholic School</span>
-            </li>
-            <li class="edu-item">
-              <span class="level">KINDER 1 – 2</span>
-              <span class="school">Gerona Junior College</span>
-            </li>
-          </ul>
+        <!-- Separate Interest Pills -->
+        <div class="interests-section">
+          <span class="interests-title mono">// PERSONAL INTERESTS</span>
+          <div class="interest-tags">
+            <span class="interest-tag">Writing</span>
+            <span class="interest-tag">Reading</span>
+            <span class="interest-tag">Playing Instruments</span>
+            <span class="interest-tag">Driving</span>
+            <span class="interest-tag">Designing</span>
+            <span class="interest-tag">Robotics</span>
+            <span class="interest-tag">Drawing</span>
+          </div>
         </div>
       </div>
 
@@ -523,234 +688,336 @@
    </div>
   </section>
 
-  <!-- PAGE 3: ACHIEVEMENTS SECTION (OPTION 1: 5-CARD GRID WITH ALL 14 PHOTOS) -->
+  <!-- PAGE 3: ACHIEVEMENTS (LEFT) & EDUCATIONAL BACKGROUND WITH CIRCLE PHOTO (RIGHT) -->
   <section id="achievement">
    <div class="page-inner">
     <div class="page-head" style="margin-bottom:12px;">
-      <h2>Achievements</h2>
-      <span class="mono">RECOGNITIONS, MILESTONES &amp; PROJECTS</span>
+      <h2>Achievements &amp; Education</h2>
+      <span class="mono">RECOGNITIONS, MILESTONES &amp; EDUCATIONAL BACKGROUND</span>
     </div>
 
-    <div class="ach-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-      
-      <!-- 01: Academic Honors (2 Photos) -->
-      <div class="card" style="padding: 14px 18px;">
-        <span class="num mono" style="margin-bottom: 4px;">01 // ACADEMIC HONORS</span>
-        <h3 style="font-size: 1rem; margin-bottom: 4px;">Academic Honors &amp; Awards</h3>
-        <p style="font-size: 0.78rem; margin-bottom: 8px; line-height: 1.4;">Consistently recognized for academic excellence, honor rolls, and dedicated coursework.</p>
-        <div class="ach-photos" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-          <div class="photo-box" style="min-height: 60px;">
-            <img src="images/medals-spread.jpg" alt="Medals & Certificates" onerror="this.style.display='none'">
-            <div class="photo-placeholder-text">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span style="font-size:0.7rem;">Medals &amp; Certs</span>
+    <div class="ach-edu-layout">
+      <!-- LEFT COLUMN: 5-Card Achievements Grid with all 14 Photos -->
+      <div class="ach-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        
+        <!-- 01: Academic Honors (2 Photos) -->
+        <div class="card" style="padding: 14px 18px;">
+          <span class="num mono" style="margin-bottom: 4px;">01 // ACADEMIC HONORS</span>
+          <h3 style="font-size: 1rem; margin-bottom: 4px;">Academic Honors &amp; Awards</h3>
+          <p style="font-size: 0.78rem; margin-bottom: 8px; line-height: 1.4;">Consistently recognized for academic excellence, honor rolls, and dedicated coursework.</p>
+          <div class="ach-photos" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div class="photo-box" style="min-height: 60px;">
+              <img src="images/medals-spread.jpg" alt="Medals & Certificates" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span style="font-size:0.7rem;">Medals &amp; Certs</span>
+              </div>
             </div>
-          </div>
-          <div class="photo-box" style="min-height: 60px;">
-            <img src="images/medals-closeup.jpg" alt="Medals Closeup" onerror="this.style.display='none'">
-            <div class="photo-placeholder-text">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span style="font-size:0.7rem;">Close-up View</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 02: Educational Completion & Milestones (3 Photos) -->
-      <div class="card" style="padding: 14px 18px;">
-        <span class="num mono" style="margin-bottom: 4px;">02 // EDUCATIONAL MILESTONES</span>
-        <h3 style="font-size: 1rem; margin-bottom: 4px;">Graduation Milestones</h3>
-        <p style="font-size: 0.78rem; margin-bottom: 8px; line-height: 1.4;">Celebrating key educational milestones from Grade 6 to Senior High School graduation.</p>
-        <div class="ach-photos" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
-          <div class="photo-box" style="min-height: 60px;">
-            <img src="images/grade-6.jpg" alt="6th Grade Graduation" onerror="this.style.display='none'">
-            <div class="photo-placeholder-text">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span style="font-size:0.65rem;">6th Grade</span>
-            </div>
-          </div>
-          <div class="photo-box" style="min-height: 60px;">
-            <img src="images/grade-10.jpg" alt="10th Grade Graduation with Dad" onerror="this.style.display='none'">
-            <div class="photo-placeholder-text">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span style="font-size:0.65rem;">10th Grade</span>
-            </div>
-          </div>
-          <div class="photo-box" style="min-height: 60px;">
-            <img src="images/grade-12.jpg" alt="12th Grade Graduation with Parents" onerror="this.style.display='none'">
-            <div class="photo-placeholder-text">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span style="font-size:0.65rem;">12th Grade</span>
+            <div class="photo-box" style="min-height: 60px;">
+              <img src="images/medals-closeup.jpg" alt="Medals Closeup" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span style="font-size:0.7rem;">Close-up View</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- 03: Projects & Leadership (2 Photos) -->
-      <div class="card" style="padding: 14px 18px;">
-        <span class="num mono" style="margin-bottom: 4px;">03 // PROJECTS &amp; LEADERSHIP</span>
-        <h3 style="font-size: 1rem; margin-bottom: 4px;">Capstone &amp; Museum Exhibits</h3>
-        <p style="font-size: 0.78rem; margin-bottom: 8px; line-height: 1.4;">Top 3 Arduino capstone project &amp; St. Peter Sanz big book displayed in the school museum.</p>
-        <div class="ach-photos" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-          <div class="photo-box" style="min-height: 60px;">
-            <img src="images/arduino-capstone.jpg" alt="Arduino Capstone Project" onerror="this.style.display='none'">
-            <div class="photo-placeholder-text">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span style="font-size:0.7rem;">Arduino Capstone</span>
+        <!-- 02: Educational Completion & Milestones (3 Photos) -->
+        <div class="card" style="padding: 14px 18px;">
+          <span class="num mono" style="margin-bottom: 4px;">02 // EDUCATIONAL MILESTONES</span>
+          <h3 style="font-size: 1rem; margin-bottom: 4px;">Graduation Milestones</h3>
+          <p style="font-size: 0.78rem; margin-bottom: 8px; line-height: 1.4;">Celebrating key educational milestones from Grade 6 to Senior High School graduation.</p>
+          <div class="ach-photos" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
+            <div class="photo-box" style="min-height: 60px;">
+              <img src="images/grade-6.jpg" alt="6th Grade Graduation" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span style="font-size:0.65rem;">6th Grade</span>
+              </div>
             </div>
-          </div>
-          <div class="photo-box" style="min-height: 60px;">
-            <img src="images/saint-big-book.jpg" alt="St. Peter Sanz Big Book" onerror="this.style.display='none'">
-            <div class="photo-placeholder-text">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span style="font-size:0.7rem;">Saint Big Book</span>
+            <div class="photo-box" style="min-height: 60px;">
+              <img src="images/grade-10.jpg" alt="10th Grade Graduation with Dad" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span style="font-size:0.65rem;">10th Grade</span>
+              </div>
+            </div>
+            <div class="photo-box" style="min-height: 60px;">
+              <img src="images/grade-12.jpg" alt="12th Grade Graduation with Parents" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span style="font-size:0.65rem;">12th Grade</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- 04: Competitions & Awards (3 Photos) -->
-      <div class="card" style="padding: 14px 18px;">
-        <span class="num mono" style="margin-bottom: 4px;">04 // COMPETITIONS &amp; AWARDS</span>
-        <h3 style="font-size: 1rem; margin-bottom: 4px;">Band &amp; Academic Contests</h3>
-        <p style="font-size: 0.78rem; margin-bottom: 8px; line-height: 1.4;">1st Place Battle of the Bands (defeating 10 bands) &amp; Best in Work Immersion.</p>
-        <div class="ach-photos" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
-          <div class="photo-box" style="min-height: 60px;">
-            <img src="images/band-group.jpg" alt="Battle of the Bands Group" onerror="this.style.display='none'">
-            <div class="photo-placeholder-text">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span style="font-size:0.65rem;">Battle of Bands</span>
+        <!-- 03: Projects & Leadership (2 Photos) -->
+        <div class="card" style="padding: 14px 18px;">
+          <span class="num mono" style="margin-bottom: 4px;">03 // PROJECTS &amp; LEADERSHIP</span>
+          <h3 style="font-size: 1rem; margin-bottom: 4px;">Capstone &amp; Museum Exhibits</h3>
+          <p style="font-size: 0.78rem; margin-bottom: 8px; line-height: 1.4;">Top 3 Arduino capstone project &amp; St. Peter Sanz big book displayed in the school museum.</p>
+          <div class="ach-photos" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div class="photo-box" style="min-height: 60px;">
+              <img src="images/arduino-capstone.jpg" alt="Arduino Capstone Project" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span style="font-size:0.7rem;">Arduino Capstone</span>
+              </div>
             </div>
-          </div>
-          <div class="photo-box" style="min-height: 60px;">
-            <img src="images/band-trophy.jpg" alt="Trophy & Certificate" onerror="this.style.display='none'">
-            <div class="photo-placeholder-text">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span style="font-size:0.65rem;">Trophy &amp; Cert</span>
-            </div>
-          </div>
-          <div class="photo-box" style="min-height: 60px;">
-            <img src="images/work-immersion.jpg" alt="Best in Work Immersion" onerror="this.style.display='none'">
-            <div class="photo-placeholder-text">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span style="font-size:0.65rem;">Work Immersion</span>
+            <div class="photo-box" style="min-height: 60px;">
+              <img src="images/saint-big-book.jpg" alt="St. Peter Sanz Big Book" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span style="font-size:0.7rem;">Saint Big Book</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- 05: Special Recognitions & Robotics (4 New Photos spanning across bottom) -->
-      <div class="card ach-span-2" style="padding: 14px 18px;">
-        <span class="num mono" style="margin-bottom: 4px;">05 // SPECIAL RECOGNITIONS, SERVICE &amp; ROBOTICS</span>
-        <h3 style="font-size: 1rem; margin-bottom: 4px;">Elementary Honors, Service Awards &amp; Grade 11 Robotics</h3>
-        <p style="font-size: 0.78rem; margin-bottom: 8px; line-height: 1.4;">Elementary Recognition with Honors, Golden Heart Award for charity work, Angel of the Church Award, and Grade 11 Robot Assembly &amp; Programming.</p>
-        <div class="ach-photos ach-photos-4" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
-          <div class="photo-box" style="min-height: 60px;">
-            <img src="images/elem-honors.jpg" alt="Elementary Recognition with Honors" onerror="this.style.display='none'">
-            <div class="photo-placeholder-text">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span style="font-size:0.68rem;">Elem. Honors</span>
+        <!-- 04: Competitions & Awards (3 Photos) -->
+        <div class="card" style="padding: 14px 18px;">
+          <span class="num mono" style="margin-bottom: 4px;">04 // COMPETITIONS &amp; AWARDS</span>
+          <h3 style="font-size: 1rem; margin-bottom: 4px;">Band &amp; Academic Contests</h3>
+          <p style="font-size: 0.78rem; margin-bottom: 8px; line-height: 1.4;">1st Place Battle of the Bands (defeating 10 bands) &amp; Best in Work Immersion.</p>
+          <div class="ach-photos" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
+            <div class="photo-box" style="min-height: 60px;">
+              <img src="images/band-group.jpg" alt="Battle of the Bands Group" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span style="font-size:0.65rem;">Battle of Bands</span>
+              </div>
             </div>
-          </div>
-          <div class="photo-box" style="min-height: 60px;">
-            <img src="images/golden-heart.jpg" alt="Golden Heart Award (Charity Work)" onerror="this.style.display='none'">
-            <div class="photo-placeholder-text">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span style="font-size:0.68rem;">Golden Heart Award</span>
+            <div class="photo-box" style="min-height: 60px;">
+              <img src="images/band-trophy.jpg" alt="Trophy & Certificate" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span style="font-size:0.65rem;">Trophy &amp; Cert</span>
+              </div>
             </div>
-          </div>
-          <div class="photo-box" style="min-height: 60px;">
-            <img src="images/angel-church.jpg" alt="Angel of the Church Award" onerror="this.style.display='none'">
-            <div class="photo-placeholder-text">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span style="font-size:0.68rem;">Angel of the Church</span>
-            </div>
-          </div>
-          <div class="photo-box" style="min-height: 60px;">
-            <img src="images/robotics-grade11.jpg" alt="Grade 11 Robotics Completion" onerror="this.style.display='none'">
-            <div class="photo-placeholder-text">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span style="font-size:0.68rem;">Grade 11 Robotics</span>
+            <div class="photo-box" style="min-height: 60px;">
+              <img src="images/work-immersion.jpg" alt="Best in Work Immersion" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span style="font-size:0.65rem;">Work Immersion</span>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- 05: Special Recognitions & Robotics (4 Photos spanning across bottom) -->
+        <div class="card ach-span-2" style="padding: 14px 18px;">
+          <span class="num mono" style="margin-bottom: 4px;">05 // SPECIAL RECOGNITIONS, SERVICE &amp; ROBOTICS</span>
+          <h3 style="font-size: 1rem; margin-bottom: 4px;">Elementary Honors, Service Awards &amp; Grade 11 Robotics</h3>
+          <p style="font-size: 0.78rem; margin-bottom: 8px; line-height: 1.4;">Elementary Recognition with Honors, Golden Heart Award for charity work, Angel of the Church Award, and Grade 11 Robot Assembly &amp; Programming.</p>
+          <div class="ach-photos ach-photos-4" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+            <div class="photo-box" style="min-height: 60px;">
+              <img src="images/elem-honors.jpg" alt="Elementary Recognition with Honors" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span style="font-size:0.68rem;">Elem. Honors</span>
+              </div>
+            </div>
+            <div class="photo-box" style="min-height: 60px;">
+              <img src="images/golden-heart.jpg" alt="Golden Heart Award (Charity Work)" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span style="font-size:0.68rem;">Golden Heart Award</span>
+              </div>
+            </div>
+            <div class="photo-box" style="min-height: 60px;">
+              <img src="images/angel-church.jpg" alt="Angel of the Church Award" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span style="font-size:0.68rem;">Angel of the Church</span>
+              </div>
+            </div>
+            <div class="photo-box" style="min-height: 60px;">
+              <img src="images/robotics-grade11.jpg" alt="Grade 11 Robotics Completion" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span style="font-size:0.68rem;">Grade 11 Robotics</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
+      <!-- RIGHT COLUMN: Separate Educational Background Card with Individual School Logo Circles -->
+      <div class="card edu-side-card">
+        <div>
+          <span class="num mono">06 // ACADEMIC JOURNEY</span>
+          <h3>Educational Background</h3>
+          <p style="font-size: 0.74rem; margin-bottom: 4px; line-height: 1.35;">Click any school circle to add or preview its official seal.</p>
+        </div>
+
+        <!-- Chronological Schools Attended with Circular Logo Slots -->
+        <ul class="edu-list">
+          <li class="edu-item">
+            <div class="photo-box school-logo-circle">
+              <img src="images/logo-kinder.png" alt="Gerona Junior College Logo" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+                <span>Logo</span>
+              </div>
+            </div>
+            <div class="edu-details">
+              <span class="level">KINDER 1 – 2</span>
+              <span class="school">Gerona Junior College</span>
+            </div>
+          </li>
+
+          <li class="edu-item">
+            <div class="photo-box school-logo-circle">
+              <img src="images/logo-gcs.png" alt="Gerona Catholic School Logo" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+                <span>Logo</span>
+              </div>
+            </div>
+            <div class="edu-details">
+              <span class="level">GRADE 1 – 10</span>
+              <span class="school">Gerona Catholic School</span>
+            </div>
+          </li>
+
+          <li class="edu-item">
+            <div class="photo-box school-logo-circle">
+              <img src="images/logo-srcs.png" alt="St. Rose Catholic School Logo" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+                <span>Logo</span>
+              </div>
+            </div>
+            <div class="edu-details">
+              <span class="level">GRADE 11 – 12</span>
+              <span class="school">St. Rose Catholic School</span>
+            </div>
+          </li>
+
+          <li class="edu-item">
+            <div class="photo-box school-logo-circle">
+              <img src="images/logo-uc.png" alt="University of the Cordilleras Logo" onerror="this.style.display='none'">
+              <div class="photo-placeholder-text">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+                <span>Logo</span>
+              </div>
+            </div>
+            <div class="edu-details">
+              <span class="level">PRESENT</span>
+              <span class="school">University of the Cordilleras</span>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
    </div>
   </section>
 
-  <!-- PAGE 4: PARENT SECTION -->
+  <!-- PAGE 4: FAMILY & FRIENDS SECTION -->
   <section id="parent">
    <div class="page-inner">
     <div class="page-head">
-      <h2>Parent</h2>
-      <span class="mono">FAMILY &amp; GUARDIANS</span>
+      <h2>Family &amp; Friends</h2>
+      <span class="mono">FAMILY, GUARDIANS &amp; FRIENDS</span>
     </div>
-    <div class="parent-container">
+    <div class="family-friends-grid">
       
-      <!-- LEFT SIDE: Separate Mother & Father Cards -->
-      <div class="parents-left-col">
-        <!-- Father Card -->
-        <div class="card" style="padding: 16px 20px;">
-          <span class="num mono" style="margin-bottom: 4px;">FATHER // DETAILS &amp; APPRECIATION</span>
-          <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Mr. Sherwin Dela Cruz</h3>
-          
-          <div style="display: grid; grid-template-columns: 110px 1fr; gap: 14px; align-items: stretch;">
-            <div class="photo-box" style="min-height: 110px;">
+      <!-- LEFT COLUMN: Father & Mother Intermediate Boxes + Family Picture Below -->
+      <div class="family-left-col">
+        <div class="parents-pair-row">
+          <!-- Father Box -->
+          <div class="card parent-mini-card">
+            <span class="num mono" style="margin-bottom: 0;">01 // FATHER</span>
+            <h3 style="font-size: 1rem; margin-bottom: 2px;">Mr. Sherwin Dela Cruz</h3>
+            <div class="photo-box">
               <img src="images/dad-photo.jpg" alt="Photo with Dad" onerror="this.style.display='none'">
               <div class="photo-placeholder-text">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                <span style="font-size: 0.75rem;">Photo with Dad</span>
+                <span style="font-size: 0.74rem;">Insert Father Photo</span>
               </div>
             </div>
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--gold-border); border-radius: 8px; padding: 10px 12px; display: flex; align-items: center;">
-              <p style="margin: 0; font-size: 0.82rem; color: var(--muted); line-height: 1.5; font-style: italic;">
-                Write your information, notes, and message of appreciation for your father here...
-              </p>
+            <div class="note-box">
+              <p>Write two sentences of appreciation, guidance, and favorite memories with your father here.</p>
             </div>
           </div>
-        </div>
 
-        <!-- Mother Card -->
-        <div class="card" style="padding: 16px 20px;">
-          <span class="num mono" style="margin-bottom: 4px;">MOTHER // DETAILS &amp; APPRECIATION</span>
-          <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Mrs. Dale Dela Cruz</h3>
-          
-          <div style="display: grid; grid-template-columns: 110px 1fr; gap: 14px; align-items: stretch;">
-            <div class="photo-box" style="min-height: 110px;">
+          <!-- Mother Box -->
+          <div class="card parent-mini-card">
+            <span class="num mono" style="margin-bottom: 0;">02 // MOTHER</span>
+            <h3 style="font-size: 1rem; margin-bottom: 2px;">Mrs. Dale Dela Cruz</h3>
+            <div class="photo-box">
               <img src="images/mom-photo.jpg" alt="Photo with Mom" onerror="this.style.display='none'">
               <div class="photo-placeholder-text">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                <span style="font-size: 0.75rem;">Photo with Mom</span>
+                <span style="font-size: 0.74rem;">Insert Mother Photo</span>
               </div>
             </div>
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--gold-border); border-radius: 8px; padding: 10px 12px; display: flex; align-items: center;">
-              <p style="margin: 0; font-size: 0.82rem; color: var(--muted); line-height: 1.5; font-style: italic;">
-                Write your information, notes, and message of appreciation for your mother here...
-              </p>
+            <div class="note-box">
+              <p>Write two sentences of love, encouragement, and gratitude for your mother here.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Family Picture Box Below Parents -->
+        <div class="card family-bottom-card">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px;">
+            <div>
+              <span class="num mono" style="margin-bottom: 2px;">03 // FAMILY GALLERY</span>
+              <h3 style="font-size: 1.02rem; margin-bottom: 0;">Family Picture</h3>
+            </div>
+            <span class="mono" style="font-size: 0.7rem; color: var(--muted);">Magaspac, Gerona, Tarlac</span>
+          </div>
+          
+          <div class="photo-box family-photo-box">
+            <img src="images/family-photo.jpg" alt="Family Picture" onerror="this.style.display='none'">
+            <div class="photo-placeholder-text">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span style="font-weight: 500; font-size: 0.84rem;">Insert Family Picture Here</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- RIGHT SIDE: Family Photo Card -->
-      <div class="parents-right-col">
-        <div class="card family-photo-card" style="padding: 18px 22px;">
-          <span class="num mono" style="margin-bottom: 4px;">FAMILY GALLERY // PHOTO</span>
-          <h3 style="font-size: 1.1rem; margin-bottom: 4px;">Family Picture</h3>
-          <p style="font-size: 0.82rem; margin-bottom: 8px;">Memories and moments together with my parents.</p>
-          
-          <div class="photo-box family-photo-box" style="margin-top: 4px;">
-            <img src="images/family-photo.jpg" alt="Family Picture" onerror="this.style.display='none'">
+      <!-- RIGHT COLUMN: Friends Gallery (3 Photos + 2 Sentences Space) -->
+      <div class="card friends-right-card">
+        <div>
+          <span class="num mono" style="margin-bottom: 4px;">04 // CIRCLE &amp; COMPANIONS</span>
+          <h3 style="font-size: 1.15rem; margin-bottom: 4px;">Friends</h3>
+          <p style="font-size: 0.8rem; margin-bottom: 4px;">Unforgettable moments and laughter shared with close friends along the journey.</p>
+        </div>
+
+        <div class="friends-photos-grid">
+          <div class="photo-box">
+            <img src="images/friends-1.jpg" alt="Friends Photo 1" onerror="this.style.display='none'">
             <div class="photo-placeholder-text">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span style="font-weight: 500; font-size: 0.88rem;">Insert Family Picture Here</span>
-              <span style="font-size: 0.7rem; opacity: 0.8;">Baguio City, Benguet</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span style="font-size: 0.72rem;">Friend Photo 1</span>
+            </div>
+          </div>
+          <div class="photo-box">
+            <img src="images/friends-2.jpg" alt="Friends Photo 2" onerror="this.style.display='none'">
+            <div class="photo-placeholder-text">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span style="font-size: 0.72rem;">Friend Photo 2</span>
+            </div>
+          </div>
+          <div class="photo-box">
+            <img src="images/friends-3.jpg" alt="Friends Photo 3" onerror="this.style.display='none'">
+            <div class="photo-placeholder-text">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span style="font-size: 0.72rem;">Friend Photo 3</span>
             </div>
           </div>
         </div>
+
+        <div class="note-box" style="padding: 12px 14px;">
+          <p>Write two sentences about your friends, shared adventures, and how they inspire and support you every day.</p>
+        </div>
       </div>
+
     </div>
    </div>
   </section>
